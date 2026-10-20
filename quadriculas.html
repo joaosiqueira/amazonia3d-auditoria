@@ -1,0 +1,3141 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<style>body{margin:0}</style>
+</head>
+<body>
+<title>Quadrículas de Solo — AMAZONIA3D</title>
+<script>
+  // Tema resolvido ANTES do primeiro pixel, senão a página pisca no tema errado.
+  // Default é claro por decisão editorial: o documento é impresso e enviado, e
+  // sai do padrão de seguir o prefers-color-scheme do visualizador.
+  (function () {
+    var t = "light";
+    try { t = localStorage.getItem("auditoria-tema") || "light"; } catch (e) {}
+    document.documentElement.setAttribute("data-theme", t === "dark" ? "dark" : "light");
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+<style>
+/* ============================================================================
+   MapBiomas Design System — tokens
+   ----------------------------------------------------------------------------
+   Gerado do `tokens.json` do DS e extraido em 13/10/2026 do artefato
+   "Piloto TerraHidro nivel 9" (https://claude.ai/artifact/QLUJknLGGCNFTf3XUKV9Wo),
+   que e a referencia viva dos componentes de plataforma.
+
+   Os comentarios por token ficaram no artefato de origem; aqui vale a regra:
+   **nao editar este arquivo a mao**. Valor que precisa mudar muda no DS; nome
+   proprio deste projeto entra no bloco de apelidos do relatorio, nunca aqui.
+
+   Tres blocos: as rampas e os semanticos no claro, a mecanica (espaco, raio,
+   tipografia, transicao, z-index) que nao muda com o tema, e o escuro, que
+   **redefine as rampas** em vez de remapear semanticos — por isso qualquer
+   componente escrito nos tokens responde aos dois temas sozinho.
+   ============================================================================ */
+
+:root, [data-theme="light"] {
+  --color-primary-100: #f8fdfe;
+  --color-primary-200: #d5f0f8;
+  --color-primary-300: #b4e3f2;
+  --color-primary-400: #94d5e9;
+  --color-primary-500: #75c7e0;
+  --color-primary-600: #62a5bb;
+  --color-primary-700: #43798a;
+  --color-primary-800: #2c515d;
+  --color-primary-900: #15292f;
+  --color-primary-1000: #0a1417;
+  --color-neutral-100: #ffffff;
+  --color-neutral-200: #f1f2f2;
+  --color-neutral-300: #d2d3d4;
+  --color-neutral-400: #b4b5b6;
+  --color-neutral-500: #959698;
+  --color-neutral-600: #76787a;
+  --color-neutral-700: #5b5d5f;
+  --color-neutral-800: #414243;
+  --color-neutral-900: #262728;
+  --color-neutral-1000: #0c0c0c;
+  --color-neutral-1100: #000000;
+  --color-green-100: #e6f4ec;
+  --color-green-200: #ceead9;
+  --color-green-300: #b5dfc6;
+  --color-green-400: #9dd5b3;
+  --color-green-500: #84caa0;
+  --color-green-600: #77b893;
+  --color-green-700: #4f7960;
+  --color-green-800: #355140;
+  --color-green-900: #1a2820;
+  --color-error-100: #fdd6d1;
+  --color-error-200: #f6988c;
+  --color-error-300: #f17b6b;
+  --color-error-400: #eb5e4b;
+  --color-error-500: #e3422c;
+  --color-error-600: #c93824;
+  --color-error-700: #af2e1c;
+  --color-error-800: #942516;
+  --color-error-900: #781c10;
+  --color-warning-100: #fffbeb;
+  --color-warning-200: #fff4be;
+  --color-warning-300: #ffe783;
+  --color-warning-400: #ffd644;
+  --color-warning-500: #f39c13;
+  --color-warning-600: #c97c09;
+  --color-warning-700: #8c5704;
+  --color-warning-800: #6b4203;
+  --color-warning-900: #422802;
+  --color-maroon-100: #f2d7d7;
+  --color-maroon-200: #e6afaf;
+  --color-maroon-300: #d98686;
+  --color-maroon-400: #cd5e5e;
+  --color-maroon-500: #c03636;
+  --color-maroon-600: #832413;
+  --color-maroon-700: #641c1c;
+  --color-maroon-800: #451313;
+  --color-maroon-900: #260b0b;
+  --color-yellow-arid-200: #f1f1c9;
+  --color-yellow-arid-500: #dcdb77;
+  --color-yellow-arid-700: #848347;
+  --color-red-fire-200: #f6b3ac;
+  --color-red-fire-500: #e84130;
+  --color-red-fire-700: #8b271d;
+  --color-blue-water-200: #c6e0f3;
+  --color-blue-water-500: #70b2e0;
+  --color-blue-water-700: #436b86;
+  --color-orange-soil-200: #f2ccb5;
+  --color-orange-soil-500: #ca6528;
+  --color-orange-soil-700: #743712;
+  --color-ochre-degradation-200: #deccb6;
+  --color-ochre-degradation-500: #926226;
+  --color-ochre-degradation-700: #533612;
+  --color-yellow-mining-200: #ffe0ad;
+  --color-yellow-mining-500: #f39c13;
+  --color-yellow-mining-700: #8c5704;
+  --color-orange-pasture-200: #ffdcad;
+  --color-orange-pasture-500: #ff9313;
+  --color-orange-pasture-700: #8c5104;
+  --color-gray-infra-200: #c2c2c6;
+  --color-gray-infra-500: #43434f;
+  --color-gray-infra-700: #25252c;
+  --color-purple-agriculture-200: #eab8f3;
+  --color-purple-agriculture-500: #b731ce;
+  --color-purple-agriculture-700: #681776;
+  --color-orange-deforestation-200: #ffc4bb;
+  --color-orange-deforestation-500: #ff543c;
+  --color-orange-deforestation-700: #8c2a1c;
+  --color-purple-ultra-analysis-200: #d9c2fe;
+  --color-purple-ultra-analysis-500: #8e50f1;
+  --color-purple-ultra-analysis-700: #51298f;
+  --color-green-vegetation-200: #bdf0cd;
+  --color-green-vegetation-500: #3fc668;
+  --color-green-vegetation-700: #20763a;
+  --color-green-recovery-200: #e1f2b0;
+  --color-green-recovery-500: #a6c742;
+  --color-green-recovery-700: #6c802b;
+  --color-petroleum-mosaic-200: #acd7cf;
+  --color-petroleum-mosaic-500: #007b64;
+  --color-petroleum-mosaic-700: #004a3c;
+  --color-blue-10m-200: #acb2f2;
+  --color-blue-10m-500: #051cc8;
+  --color-blue-10m-700: #000c79;
+  --color-blue-reefs-200: #b8daee;
+  --color-blue-reefs-500: #2e8bc0;
+  --color-blue-reefs-700: #165173;
+  --color-yellow-urban-200: #fff4be;
+  --color-yellow-urban-400: #ffe783;
+  --color-yellow-urban-500: #ffd644;
+  --color-yellow-urban-700: #937e22;
+  --color-blue-200: #d5f0f8;
+  --color-blue-500: #75c7e0;
+  --color-blue-700: #43798a;
+  --color-border: var(--color-primary-300);
+  --color-background-surface: var(--color-primary-200);
+  --color-highlight: var(--color-primary-500);
+  --color-notification: var(--color-primary-700);
+  --color-text-theme: var(--color-primary-900);
+  --color-icon-theme: var(--color-primary-600);
+  --color-action-bg: var(--color-primary-700);
+  --color-action-bg-hover: var(--color-primary-800);
+  --color-action-fg: var(--color-neutral-100);
+  --color-action-focus-ring: var(--color-primary-500);
+  --color-action-soft-border: var(--color-primary-600);
+  --color-action-soft-border-strong: var(--color-primary-800);
+  --color-selected-bg: var(--color-primary-500);
+  --color-selected-fg: var(--color-neutral-1000);
+  --color-favorite-star: var(--color-yellow-mining-500);
+  --color-identity-1-bg: #e5f1e6;
+  --color-identity-1-fg: #48754d;
+  --color-identity-2-bg: #fceae4;
+  --color-identity-2-fg: #955c48;
+  --color-identity-3-bg: #fde9e9;
+  --color-identity-3-fg: #9b575b;
+  --color-identity-4-bg: #ededfa;
+  --color-identity-4-fg: #606799;
+  --color-identity-5-bg: #eeecfa;
+  --color-identity-5-fg: #696886;
+  --color-identity-6-bg: #e1f0fa;
+  --color-identity-6-fg: #107397;
+  --color-tooltip-bg: var(--color-neutral-900);
+  --color-tooltip-fg: var(--color-neutral-100);
+  --color-warning-bg: var(--color-warning-200);
+  --color-warning-fg: var(--color-warning-700);
+  --color-warning-border: var(--color-warning-300);
+  --color-status-active-bg: var(--color-green-200);
+  --color-status-active-fg: var(--color-green-800);
+  --color-status-pending-bg: var(--color-warning-200);
+  --color-status-pending-fg: var(--color-warning-800);
+  --color-status-failed-bg: var(--color-error-200);
+  --color-status-failed-fg: var(--color-error-800);
+  --color-status-inactive-bg: var(--color-neutral-200);
+  --color-status-inactive-fg: var(--color-neutral-700);
+  --color-status-info-bg: var(--color-primary-200);
+  --color-status-info-fg: var(--color-primary-800);
+  --color-gradient-primary-start: #9747ff;
+  --color-gradient-primary-end: #2657f7;
+  --gray-0: var(--color-neutral-100);
+  --gray-50: var(--color-neutral-200);
+  --gray-100: var(--color-neutral-300);
+  --gray-200: var(--color-neutral-400);
+  --gray-250: var(--color-neutral-500);
+  --gray-300: var(--color-neutral-600);
+  --gray-400: #808080;
+  --gray-500: var(--color-neutral-700);
+  --gray-800: var(--color-neutral-800);
+  --gray-900: var(--color-neutral-900);
+  --black: var(--color-neutral-1000);
+  --petrol-900: var(--color-primary-900);
+  --petrol-700: var(--color-primary-800);
+  --petrol-500: var(--color-primary-700);
+  --petrol-300: var(--color-primary-600);
+  --petrol-100: var(--color-primary-200);
+  --bg-page: var(--color-neutral-100);
+  --bg-header: var(--color-neutral-200);
+  --bg-chip-inactive: var(--color-neutral-200);
+  --bg-surface-dark: var(--color-neutral-800);
+  --border-subtle: var(--color-neutral-300);
+  --text-primary: var(--color-neutral-900);
+  --text-secondary: var(--color-neutral-1000);
+  --text-tertiary: var(--color-neutral-700);
+  --text-muted: #808080;
+  --text-on-accent: #ffffff;
+  --accent: var(--color-primary-700);
+  --accent-strong: var(--color-primary-900);
+  --accent-link: var(--color-primary-700);
+  --accent-soft-bg: var(--color-primary-200);
+  --pill-default-bg: var(--color-yellow-urban-500);
+  --pill-default-fg: var(--color-neutral-1000);
+  --pill-origin-bg: var(--color-green-100);
+  --pill-origin-fg: var(--color-green-700);
+  --pill-new-bg: var(--color-green-100);
+  --pill-new-fg: var(--color-green-800);
+  --pill-collection-bg: var(--color-primary-100);
+  --pill-collection-fg: var(--color-primary-800);
+  --pill-beta-bg: #f8f8e4;
+  --pill-beta-fg: #585830;
+  --bg-selected-soft: var(--color-primary-100);
+  --danger: var(--color-error-600);
+  --danger-soft: var(--color-error-400);
+  --theme-coverage: #43798a;
+  --theme-deforestation: #a92923;
+  --theme-secondary-veg: #27ce38;
+  --theme-agriculture: #e63df5;
+  --theme-pasture: #f49906;
+  --theme-fire: #e84130;
+  --theme-mining: #efa906;
+  --theme-soil: #a34f2e;
+  --theme-degradation: #7f481f;
+  --theme-urban: #f84120;
+  --theme-phytophysiognomy: #079d20;
+  --data-forest: #1f8d49;
+  --data-forest-soft: #77b893;
+  --data-forest-deep: #04381d;
+  --data-pasture: #d6bc74;
+  --data-pasture-soft: #ffefc3;
+  --data-alert: #d4271e;
+  --data-water: #2532e4;
+  --data-green-vivid: #02d659;
+  --data-agriculture: #734c1b;
+  --shadow-small: 0px 0px 8px 2px #00000026;
+  --shadow-medium: 0px 12px 16px -4px #41424326;
+  --shadow-large: 0px 0px 40px 4px #0000001a;
+  --shadow-none: none;
+  --shadow-card: 0px 12px 16px -4px #41424326;
+
+  /* Bussola do MapControls (DS, 05/10/2026): ainda fora do tokens.css gerado. */
+  --color-compass-bg: #252526;
+  --color-compass-fg: #f1f2f2;
+  --color-compass-outline: #444546;
+  --color-compass-needle: #ff0000;
+  --color-compass-tick: #959698;
+}
+
+:root {
+  /* Shorthands de tipografia e apelidos de familia. */
+  --font-family-base: var(--font-sans, 'Open Sans', sans-serif);
+  --font-body: var(--font-family-base);
+  --body-large-strong: 700 18px/27px var(--font-family-base);
+  --body-large: 400 18px/27px var(--font-family-base);
+  --body-medium-strong: 700 16px/24px var(--font-family-base);
+  --body-medium-semibold: 600 16px/24px var(--font-family-base);
+  --body-medium: 400 16px/24px var(--font-family-base);
+  --body-small-strong: 700 14px/21px var(--font-family-base);
+  --body-small-semibold: 600 14px/21px var(--font-family-base);
+  --body-small: 400 14px/21px var(--font-family-base);
+  --body-note-strong: 700 12px/18px var(--font-family-base);
+  --body-note: 400 12px/18px var(--font-family-base);
+}
+
+:root {
+  --spacing-size-none: 0px;
+  --spacing-size-smaller: 2px;
+  --spacing-size-small: 4px;
+  --spacing-size-medium: 8px;
+  --spacing-size-large: 12px;
+  --spacing-size-xlarge: 16px;
+  --spacing-size-2xlarge: 24px;
+  --spacing-size-3xlarge: 32px;
+  --spacing-size-4xlarge: 40px;
+  --spacing-size-5xlarge: 64px;
+  --spacing-size-6xlarge: 80px;
+  --spacing-size-7xlarge: 96px;
+  --spacing-size-gigantic: 120px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --header-height: 60px;
+  --sidebar-left-width: 280px;
+  --sidebar-right-width: 360px;
+  --border-radius-none: 0px;
+  --border-radius-small: 2px;
+  --border-radius-medium: 4px;
+  --border-radius-large: 8px;
+  --border-radius-xlarge: 12px;
+  --border-radius-rounded: 100px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 100px;
+  --radius-circle: 50%;
+  --border-size-small: 1px;
+  --border-size-large: 2px;
+  --color-gradient-primary: linear-gradient(180deg, #9747FF 0%, #2657F7 121.25%);
+  --transition-default-speed: 150ms;
+  --transition-default-easing: ease-in-out;
+  --transition-default: 150ms ease-in-out;
+  --layout-mobile: 599px;
+  --layout-tablet-small: 839px;
+  --layout-tablet: 1019px;
+  --layout-desktop-small: 1279px;
+  --layout-desktop: 1919px;
+  --z-index-plain-content: 0;
+  --z-index-principal-content: 1;
+  --z-index-tooltip: 500;
+  --z-index-modal: 1000;
+  --z-index-dialog: 2000;
+  --z-index-float-menu: 3000;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --weight-regular: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-display: 700;
+  --text-xs: 12px;
+  --text-sm: 12px;
+  --text-base: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 18px;
+  --line-tight: 1.5;
+  --line-normal: 1.5;
+  --font-sans: 'Open Sans', sans-serif;
+  --font-display: 'Montserrat', sans-serif;
+  --text-body-large-strong: 700 18px/27px var(--font-sans);
+  --text-body-large: 400 18px/27px var(--font-sans);
+  --text-body-medium-strong: 700 16px/24px var(--font-sans);
+  --text-body-medium-semibold: 600 16px/24px var(--font-sans);
+  --text-body-medium: 400 16px/24px var(--font-sans);
+  --text-body-small-strong: 700 14px/21px var(--font-sans);
+  --text-body-small-semibold: 600 14px/21px var(--font-sans);
+  --text-body-small: 400 14px/21px var(--font-sans);
+  --text-body-note-strong: 700 12px/18px var(--font-sans);
+  --text-body-note: 400 12px/18px var(--font-sans);
+  --text-wordmark: 600 31px/1 var(--font-display);
+}
+
+[data-theme="dark"] {
+  --color-primary-100:#0e2226;
+  --color-primary-200:#19353d;
+  --color-primary-300:#115065;
+  --color-primary-400:#1a667e;
+  --color-primary-500:#227b97;
+  --color-primary-600:#468aa1;
+  --color-primary-700:#6fa7b9;
+  --color-primary-800:#94becc;
+  --color-primary-900:#b9d7e0;
+  --color-primary-1000:#cce2e9;
+  --color-neutral-100:#1a2225;
+  --color-neutral-200:#182023;
+  --color-neutral-300:#2f3a3e;
+  --color-neutral-400:#455256;
+  --color-neutral-500:#808b8e;
+  --color-neutral-600:#8d999d;
+  --color-neutral-700:#a6b1b5;
+  --color-neutral-800:#c9d2d5;
+  --color-neutral-900:#e4eaec;
+  --color-neutral-1000:#f2f6f7;
+  --color-neutral-1100:#ffffff;
+  --color-green-100:#1d2f24;
+  --color-green-200:#274031;
+  --color-green-300:#285d3d;
+  --color-green-400:#307049;
+  --color-green-500:#398558;
+  --color-green-600:#4a8e67;
+  --color-green-700:#80ac92;
+  --color-green-800:#a1c1ae;
+  --color-green-900:#c2d8cb;
+  --color-error-100:#421913;
+  --color-error-200:#89190b;
+  --color-error-300:#a3210f;
+  --color-error-400:#bd2915;
+  --color-error-500:#d6331c;
+  --color-error-600:#db4833;
+  --color-error-700:#e25b48;
+  --color-error-800:#e76e5e;
+  --color-error-900:#ec8274;
+  --color-warning-100:#322a0c;
+  --color-warning-200:#4f4514;
+  --color-warning-300:#947700;
+  --color-warning-400:#c79c00;
+  --color-warning-500:#ed960c;
+  --color-warning-600:#f6a62e;
+  --color-warning-700:#fabe60;
+  --color-warning-800:#fbc97b;
+  --color-warning-900:#fcd59c;
+  --color-maroon-100:#3a1f1f;
+  --color-maroon-200:#651f1f;
+  --color-maroon-300:#862a2a;
+  --color-maroon-400:#a73434;
+  --color-maroon-500:#c93e3e;
+  --color-maroon-600:#ea7f6b;
+  --color-maroon-700:#de8989;
+  --color-maroon-800:#e6a2a2;
+  --color-maroon-900:#ecbcbc;
+  --color-blue-10m-200:#11196c;
+  --color-blue-10m-500:#2e46fa;
+  --color-blue-10m-700:#6e7cff;
+  --color-blue-200:#19353d;
+  --color-blue-500:#227b97;
+  --color-blue-700:#6fa7b9;
+  --color-identity-1-bg:#202e21;
+  --color-identity-1-fg:#83b288;
+  --color-identity-2-bg:#341b12;
+  --color-identity-2-fg:#b57a66;
+  --color-identity-3-bg:#311010;
+  --color-identity-3-fg:#a76367;
+  --color-identity-4-bg:#15152b;
+  --color-identity-4-fg:#656c9f;
+  --color-identity-5-bg:#19152c;
+  --color-identity-5-fg:#787796;
+  --color-identity-6-bg:#152835;
+  --color-identity-6-fg:#5ac6ed;
+  --color-status-failed-bg:#4a1a12;
+  --color-status-failed-fg:#f6988c;
+  --color-status-inactive-bg:#2a3438;
+  --gray-400:#8d999d;
+  --bg-page:#12181a;
+  --bg-header:#182023;
+  --bg-surface-dark:#c9d2d5;
+  --text-muted:#8d999d;
+  --text-on-accent:#12181a;
+  --pill-beta-bg:#2b2b14;
+  --pill-beta-fg:#dcdb9b;
+  color-scheme:dark;
+  --color-compass-bg: #0c0c0c;
+  --color-compass-fg: #eaebeb;
+  --color-compass-outline: #444546;
+  --color-compass-needle: #ff0000;
+  --color-compass-tick: #959698;
+}
+</style>
+<style>
+  /* ============================================================
+     MapBiomas Design System — tokens aplicados diretamente.
+     Rampas e regras vindas de tokens/colors.css, typography.css,
+     spacing.css e radius.css do projeto de design system.
+     O tema escuro NÃO existe no DS: foi derivado das mesmas rampas.
+     ============================================================ */
+  /* ---- apelidos deste documento -------------------------------------------
+     Os tokens acima sao o DS inteiro, gerados do `tokens.json`. Os nomes abaixo
+     sao os que a prosa deste documento ja usava; viram apelidos em vez de
+     valores para que exista UM sistema. Nenhum deles precisa de versao escura:
+     o DS redefine as RAMPAS no tema escuro, entao um apelido que aponta para a
+     rampa certa acompanha os dois temas sozinho. */
+  :root{
+    --sans:var(--font-sans);
+
+    --ground:var(--color-neutral-200);
+    --surface:var(--color-neutral-100);
+    --surface-2:var(--color-neutral-200);
+    --ink:var(--color-neutral-900);
+    --muted:var(--color-neutral-700);
+    --faint:var(--color-neutral-600);
+    --line:var(--color-neutral-300);
+    --line-strong:var(--color-neutral-400);
+    --accent:var(--color-action-bg);
+    --accent-soft:var(--color-primary-200);
+
+    /* estado — regra do DS: fundo-200 / texto-800, ja resolvida nos semanticos */
+    --crit-bg:var(--color-status-failed-bg);  --crit-fg:var(--color-status-failed-fg);
+    --warn-bg:var(--color-status-pending-bg); --warn-fg:var(--color-status-pending-fg);
+    --ok-bg:var(--color-status-active-bg);    --ok-fg:var(--color-status-active-fg);
+    --crit-mark:var(--color-error-600);
+    --warn-mark:var(--color-warning-500);
+    --ok-mark:var(--color-green-600);
+    --info-bg:var(--color-status-info-bg);
+    --info-fg:var(--color-status-info-fg);
+
+    /* tipografia */
+    --t-lg-strong:var(--body-large-strong);  --t-lg:var(--body-large);
+    --t-md-strong:var(--body-medium-strong); --t-md:var(--body-medium);
+    --t-sm-strong:var(--body-small-strong);  --t-sm-semi:var(--body-small-semibold);
+    --t-sm:var(--body-small);
+    --t-note-strong:var(--body-note-strong); --t-note:var(--body-note);
+
+    /* raio: 2 barra · 4 banner/chip · 8 botao/painel · 12 card · 100 pilula */
+    --r-bar:var(--border-radius-small);   --r-chip:var(--border-radius-medium);
+    --r-panel:var(--border-radius-large); --r-card:var(--border-radius-xlarge);
+    --r-pill:var(--border-radius-rounded);
+
+    /* figura de densidade */
+    --fig-ok:var(--color-primary-700);
+    --fig-crit:var(--color-error-600);
+
+    /* mapa de quadriculas: a rampa divergente e as cores de desenho do canvas */
+    --ruim-forte:var(--color-error-800);
+    --bom-forte:var(--color-primary-800);
+    --meio:var(--color-neutral-300);
+    --mapa:var(--color-neutral-200);
+    --grade:var(--color-neutral-300);
+  }
+
+  /* Os unicos que precisam de valor por tema: o lockup da marca, que o DS
+     define como as duas cores que mudam entre positivo e negativo, e as duas
+     cores com alfa que o canvas desenha — o DS nao tem token com transparencia. */
+  :root{
+    --logo-word:#43798A; --logo-gray:#808283;
+    --contorno:rgba(38,39,40,.78);
+    --rota:rgba(32,118,58,.85);
+    --rota-1:rgba(189,240,205,.9); --rota-2:rgba(63,198,104,.88);
+    --rota-3:rgba(32,118,58,.88);  --rota-4:rgba(16,70,33,.9);
+  }
+  :root[data-theme="dark"]{
+    --logo-word:#7FB6C4; --logo-gray:#9BA0A2;
+    --contorno:rgba(232,238,240,.82);
+    --rota:rgba(63,198,104,.85);
+    --rota-1:rgba(16,70,33,.95);   --rota-2:rgba(32,118,58,.9);
+    --rota-3:rgba(63,198,104,.88); --rota-4:rgba(189,240,205,.9);
+  }
+
+  body{background:var(--ground); color:var(--ink); font:var(--t-md); }
+  /* `hidden` e um atributo do HTML, mas a regra do agente de usuario perde para
+     qualquer classe que declare display — e `.q-carga` declara flex. O envelope
+     do Artifact traz esta regra de brinde; o arquivo local, nao, e a pagina
+     avulsa derivada daqui depende dela. */
+  [hidden]{display:none !important;}
+  .wrap{max-width:1020px; margin:0 auto; padding-inline:16px; padding-block:32px 80px;}
+
+  /* ---- trilho de seções ----------------------------------------------------
+     Separador vertical à esquerda: a linha de 1px é a borda do <ol> e o item
+     ativo a cobre com 2px em accent. Fica no fluxo do grid e grudado por
+     `sticky`, não fixo na viewport — barra fixa roubaria altura do primeiro
+     quadro, que é justamente o que o leitor vê antes de rolar. */
+  .doc{
+    display:grid; grid-template-columns:184px minmax(0,1fr);
+    gap:36px; margin-top:8px;
+  }
+  .col{min-width:0;}
+  .rail{position:sticky; top:calc(env(safe-area-inset-top,0px) + 24px); align-self:start;}
+  .railtit{
+    font:var(--t-note); color:var(--faint); letter-spacing:.06em;
+    text-transform:uppercase; margin:0 0 8px 14px;
+  }
+  .rail ol{list-style:none; margin:0; padding:0; border-left:1px solid var(--line-strong);}
+  .rail a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:7px 8px 7px 12px; margin-left:-1px;
+    border-left:2px solid transparent;
+    border-radius:0 var(--r-chip) var(--r-chip) 0;
+    font:var(--t-sm); color:var(--muted); text-decoration:none;
+    transition:color 150ms ease-in-out, border-color 150ms ease-in-out;
+  }
+  .rail a b{
+    font:var(--t-note-strong); color:var(--faint); flex:none;
+    font-variant-numeric:tabular-nums;
+  }
+  .rail a:hover{color:var(--ink);}
+  .rail a[aria-current="true"]{border-left-color:var(--accent); color:var(--ink);
+    font:var(--t-sm-strong);}
+  .rail a[aria-current="true"] b{color:var(--accent);}
+  .rail a:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .rail .grupo{
+    font:var(--t-note-strong); color:var(--faint); letter-spacing:.06em;
+    text-transform:uppercase; padding:14px 8px 4px 12px;
+  }
+  .rail li:first-child .grupo{padding-top:2px;}
+  @media (prefers-reduced-motion:reduce){ .rail a{transition:none;} }
+  /* o alvo de um salto de âncora não pode encostar no topo da janela */
+  section[id],.note[id]{scroll-margin-top:24px;}
+
+  /* Abaixo de 900px o trilho deita: vira uma faixa de rolagem horizontal
+     grudada no topo, e a marca do item ativo passa da borda esquerda para a
+     inferior — a mesma informação, no eixo que sobrou. */
+  @media (max-width:900px){
+    .doc{grid-template-columns:minmax(0,1fr); gap:0;}
+    .rail{
+      top:env(safe-area-inset-top,0px); z-index:5; background:var(--ground);
+      margin-inline:-16px; padding:8px 16px 0;
+      border-bottom:1px solid var(--line-strong);
+    }
+    .railtit{display:none;}
+    .rail ol{
+      display:flex; gap:2px; overflow-x:auto; border-left:0;
+      padding-bottom:8px; scrollbar-width:none;
+    }
+    .rail ol::-webkit-scrollbar{display:none;}
+    .rail li{flex:none;}
+    /* deitado, o trilho é uma faixa de rolagem: rótulo de parte roubaria a
+       largura dos itens, que são o que o leitor precisa alcançar. */
+    .rail .grupo{display:none;}
+    .rail a{
+      margin-left:0; border-left:0; border-bottom:2px solid transparent;
+      border-radius:var(--r-chip) var(--r-chip) 0 0;
+      padding:6px 10px; white-space:nowrap;
+    }
+    .rail a[aria-current="true"]{border-bottom-color:var(--accent);}
+    section[id],.note[id]{scroll-margin-top:60px;}
+  }
+  h1,h2,h3{margin:0; text-wrap:balance;}
+
+  /* ---- cabeçalho institucional ---- */
+  .brand{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:24px; flex-wrap:wrap;
+    padding-bottom:16px; border-bottom:2px solid var(--accent);
+  }
+  .brand svg{height:44px; width:auto; display:block;}
+  .brand .org{
+    font:var(--t-note); color:var(--faint); text-align:right;
+    letter-spacing:.04em;
+  }
+  .brand .org b{display:block; font:var(--t-note-strong); color:var(--muted);}
+
+  /* Alternador de tema — SegmentedControl do DS: trilho neutral-200, segmento
+     ativo em branco com rótulo primary-800, raio large, transição padrão. */
+  .themebar{display:flex; flex-direction:column; align-items:flex-end; gap:8px;}
+
+  /* ====== componentes de plataforma do DS ====================================
+     Portados do DS de plataforma do MapBiomas (referencia viva: o artefato
+     "Piloto TerraHidro nivel 9"). A classe `mb-rp-*` ou `rel-*` carrega a
+     aparencia; a classe antiga que ficou ao lado dela no HTML carrega o
+     comportamento, porque e por ela que o JavaScript acha o elemento. Separar
+     os dois papeis e o que permite trocar o componente sem caçar seletor. */
+
+  /* SegmentedControl, variante bordered small: e a que vale sobre fundo cinza. */
+  .mb-rp-seg{
+    display:inline-flex; align-items:center; gap:2px; padding:2px; height:30px;
+    background:var(--color-neutral-100); border:1px solid var(--color-neutral-300);
+    border-radius:var(--border-radius-large); width:fit-content; box-sizing:border-box;
+  }
+  .mb-rp-seg button{
+    appearance:none; box-sizing:border-box; display:inline-flex; align-items:center;
+    justify-content:center; gap:6px; height:24px; min-width:24px; padding:4px 12px;
+    border:0; border-radius:var(--border-radius-medium); background:transparent;
+    cursor:pointer; font:var(--body-small); color:var(--color-neutral-900);
+    transition:background-color var(--transition-default), color var(--transition-default);
+  }
+  /* `stretch`: ocupa a largura toda e divide em partes iguais. E a variante do
+     componente para quando o rotulo nao cabe num controle `fit-content`. */
+  .mb-rp-seg-largo{display:flex; width:100%;}
+  .mb-rp-seg-largo button{flex:1 1 0; padding:4px 8px;}
+  .mb-rp-seg button svg{width:15px; height:15px; flex:none;}
+  .mb-rp-seg button[aria-pressed="true"]{
+    background:var(--color-primary-200); color:var(--color-primary-800); font-weight:700;
+  }
+  .mb-rp-seg button:hover:not([aria-pressed="true"]){background:var(--color-primary-100);}
+  .mb-rp-seg button:focus-visible{outline:2px solid var(--color-action-focus-ring); outline-offset:2px;}
+  @media (prefers-reduced-motion:reduce){ .mb-rp-seg button{transition:none;} }
+
+  /* Painel: cabecalho em faixa neutral-200 e corpo flush — as metricas e as
+     tabelas encostam na borda de proposito, e sao elas que trazem o respiro. */
+  .mb-rp-panel{
+    background:var(--color-neutral-100); border:1px solid var(--color-neutral-300);
+    border-radius:var(--border-radius-xlarge); box-shadow:var(--shadow-medium);
+    overflow:hidden;
+  }
+  .mb-rp-panel-hd{
+    background:var(--color-neutral-200); border-bottom:1px solid var(--color-neutral-300);
+    padding:12px 16px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  }
+  .mb-rp-panel-hd h3{margin:0; font:var(--body-medium-strong); color:var(--color-neutral-900);}
+  .mb-rp-panel-bd{padding:16px;}
+  .mb-rp-metrics{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr));
+    gap:1px; background:var(--color-neutral-300); margin:0;
+  }
+  .mb-rp-metric{
+    background:var(--color-neutral-100); padding:16px;
+    display:flex; flex-direction:column; gap:4px; min-width:0;
+  }
+  .mb-rp-metric-l{
+    font:var(--body-note-strong); text-transform:uppercase; letter-spacing:.72px;
+    color:var(--color-neutral-700); margin:0;
+  }
+  .mb-rp-metric-v{
+    font:var(--body-large-strong); color:var(--color-neutral-1000);
+    font-variant-numeric:tabular-nums; margin:0;
+  }
+
+  /* Tabela de plataforma: cabecalho em faixa neutral-200, 10/16 de respiro,
+     coluna numerica a direita com algarismo de largura fixa. */
+  .mb-rp-table{border-collapse:collapse; width:100%; font:var(--body-small);}
+  .mb-rp-table th{
+    background:var(--color-neutral-200); text-align:left; font:var(--body-note-strong);
+    text-transform:uppercase; letter-spacing:.72px; color:var(--color-neutral-600);
+    padding:10px 16px; border-bottom:1px solid var(--color-neutral-300); white-space:nowrap;
+  }
+  .mb-rp-table td{
+    padding:10px 16px; border-bottom:1px solid var(--color-neutral-300);
+    color:var(--color-neutral-800); vertical-align:top;
+  }
+  .mb-rp-table tbody tr:last-child td{border-bottom:none;}
+  .mb-rp-table td.n, .mb-rp-table th.n{
+    text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;
+  }
+  .mb-rp-table td.em{color:var(--color-neutral-1000); font-weight:700;}
+
+  /* Tooltip do DS: escuro, raio medium, sem borda. */
+  .mb-rp-tip{
+    background:var(--color-tooltip-bg); color:var(--color-tooltip-fg);
+    border-radius:var(--border-radius-medium); padding:8px 12px;
+    font:var(--body-note); z-index:var(--z-index-tooltip);
+  }
+  .mb-rp-tip b{font:var(--body-note-strong);}
+
+  /* Legenda de plataforma: fileira de chaves com amostra de 10px. */
+  .mb-rp-legend-row{display:flex; flex-wrap:wrap; gap:6px 20px; align-items:center;}
+  .mb-rp-key{
+    display:inline-flex; align-items:center; gap:6px;
+    font:var(--body-note); color:var(--color-neutral-800);
+  }
+  .mb-rp-sw{width:10px; height:10px; border-radius:var(--border-radius-small); flex:0 0 auto;}
+
+  /* Rolagem do sistema: alça neutral-300, trilha invisivel. */
+  *{scrollbar-width:thin; scrollbar-color:var(--color-neutral-300) transparent;}
+  *::-webkit-scrollbar{width:8px; height:8px;}
+  *::-webkit-scrollbar-track{background:transparent; border:0;}
+  *::-webkit-scrollbar-thumb{
+    background:var(--color-neutral-300); border-radius:100px;
+    border:2px solid transparent; background-clip:content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover{background:var(--color-neutral-400); background-clip:content-box;}
+
+  .doctype{
+    font:var(--t-note-strong); letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); margin-top:32px;
+  }
+  /* ÚNICA exceção deliberada ao DS. typography.css diz que não existe escala de
+     heading e que um h1 usa --body-large-strong (18px). Isso vale para a UI da
+     plataforma, onde h1 é título de painel; num relatório de cinco seções o
+     título do documento precisa se separar do corpo. Todo o resto — inclusive
+     os h2 de seção — segue a regra. */
+  h1{
+    font-family:var(--sans); font-weight:700; font-size:32px; line-height:1.2;
+    letter-spacing:-.01em; margin-top:4px;
+  }
+  @media (max-width:520px){ h1{font-size:26px;} }
+  /* Sem limite de medida, de proposito. O `max-width:64ch` entrou junto com o
+     trilho, para preservar a linha de leitura quando o `.wrap` foi de 760 para
+     1020px — mas o h1 e a faixa de metadados ocupam a largura inteira do
+     cabecalho, e o standfirst estreito ficava destoando no meio dos dois. Sao
+     tres linhas de abertura, nao corpo de leitura longa: alinhar com o resto do
+     cabecalho vale mais aqui que a medida ideal de paragrafo. */
+  .standfirst{font:var(--t-md); color:var(--muted); margin-top:12px;}
+
+  /* ---- faixa de metadados ---- */
+  .meta{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:1px; background:var(--line); border:1px solid var(--line);
+    border-radius:var(--r-card); overflow:hidden; margin-top:24px;
+  }
+  /* Os rótulos têm contagens de linha diferentes ("Entregas" em uma,
+     "Pastas por entrega" em duas), então os valores não podem seguir o fluxo:
+     cada um começaria numa altura. A célula vira coluna flex e o valor é
+     empurrado para a base, o que os alinha entre si qualquer que seja o rótulo. */
+  .meta div{
+    background:var(--surface); padding:12px 16px;
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .meta dt{
+    font:var(--t-note); color:var(--faint); margin:0;
+    letter-spacing:.06em; text-transform:uppercase; text-wrap:balance;
+  }
+  .meta dd{
+    font:var(--t-md-strong); margin:0; margin-top:auto;
+    font-variant-numeric:tabular-nums;
+  }
+  .meta dd small{font:var(--t-note); color:var(--muted);}
+
+  /* ---- partes ----
+     Três partes acima das nove seções: o que exige ação, o acervo, as medições.
+     É a única hierarquia acima de seção no documento, então ela é uma régua —
+     não um card — e usa a mesma borda em accent do cabeçalho da página. */
+  .parte{
+    margin-top:80px; padding-bottom:10px;
+    border-bottom:2px solid var(--accent);
+    display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+    break-after:avoid;
+  }
+  .parte b{
+    font:var(--t-note-strong); color:var(--accent);
+    letter-spacing:.14em; text-transform:uppercase;
+  }
+  .parte span{font:var(--t-lg-strong);}
+  .parte em{font-style:normal; font:var(--t-note); color:var(--faint);}
+  .parte + section{margin-top:28px;}
+
+  /* ---- ponte entre a medição e o achado ----
+     Os achados foram todos para a Parte I. Sem os dois links — a seção aponta
+     para a frente, o card aponta de volta — consolidar custaria ao leitor
+     justamente o raciocínio que produziu cada achado. */
+  .achou{font:var(--t-sm); color:var(--muted); margin-top:16px;}
+  .achou b{color:var(--ink);}
+  .achou a, .origem a{color:var(--accent);}
+  .origem{font:var(--t-note); color:var(--faint); margin:8px 0 0;}
+
+  /* ---- seções ---- */
+  section{margin-top:64px;}
+  .secnum{
+    font:var(--t-note-strong); color:var(--accent);
+    letter-spacing:.1em; margin-bottom:4px;
+  }
+  h2{font:var(--t-lg-strong); padding-bottom:12px; border-bottom:1px solid var(--line-strong);}
+  .lede{font:var(--t-md); color:var(--muted); margin-top:16px;}
+  p{margin:12px 0 0;}
+  strong{font-weight:700;}
+
+  .scroller{
+    overflow-x:auto; margin-top:24px; background:var(--surface);
+    border:1px solid var(--line); border-radius:var(--r-card);
+  }
+  table{border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums;}
+  thead th{
+    font:var(--t-note); color:var(--faint); letter-spacing:.06em;
+    text-transform:uppercase; text-align:left; white-space:nowrap;
+    padding:12px 12px 8px; border-bottom:1px solid var(--line-strong);
+  }
+  tbody tr{border-bottom:1px solid var(--line);}
+  tbody tr:last-child{border-bottom:none;}
+  tbody tr.total{border-top:1px solid var(--line-strong); background:var(--surface-2);}
+
+  /* matriz de cobertura */
+  table.matrix{min-width:620px;}
+  td.ent{font:var(--t-sm-semi); padding:12px; white-space:nowrap;}
+  td.cell{padding:12px; width:15%;}
+  .bar{
+    height:6px; background:var(--surface-2); border-radius:var(--r-bar);
+    overflow:hidden;
+  }
+  .bar i{display:block; height:100%; background:var(--ok-mark); border-radius:var(--r-bar);}
+  .cell.gap .bar i, .cell.none .bar i{background:var(--crit-mark);}
+  /* `.cell .n`, nao `.n`: a classe `n` e o nome que o DS de plataforma da a
+     celula numerica de tabela, e um seletor solto aqui transformava toda
+     celula numerica do mapa num flex de duas colunas — as tabelas dos paineis
+     saiam com uma coluna por linha. Nome generico so vale dentro de casa. */
+  .cell .n{
+    font:var(--t-sm); display:flex; justify-content:space-between;
+    align-items:baseline; gap:8px; margin-bottom:6px;
+  }
+  .cell.gap .n, .cell.none .n{color:var(--crit-mark); font-weight:700;}
+  .cell .n em{font-style:normal; font:var(--t-note); color:var(--faint);}
+  .cell.gap .n em, .cell.none .n em{color:var(--crit-mark);}
+  .legend{
+    display:flex; flex-wrap:wrap; gap:16px; margin-top:12px;
+    font:var(--t-note); color:var(--muted);
+  }
+  .legend span{display:flex; align-items:center; gap:8px;}
+  .key{width:20px; height:6px; border-radius:var(--r-bar); flex:none;}
+  .key.ok{background:var(--ok-mark);}
+  .key.gap{background:var(--crit-mark);}
+
+  /* status da tratativa — mesma regra do DS: fundo-200 / texto-800 */
+  .st{font:var(--t-note-strong); padding:4px 12px; border-radius:var(--r-pill); white-space:nowrap;}
+  .st.fechado{background:var(--ok-bg); color:var(--ok-fg);}
+  .st.aberto{background:var(--crit-bg); color:var(--crit-fg);}
+  .st.parcial{background:var(--warn-bg); color:var(--warn-fg);}
+  table.trat{min-width:600px;}
+  table.trat td{padding:12px; font:var(--t-sm); vertical-align:top;}
+  table.trat td:first-child{white-space:nowrap;}
+  table.trat td.item{font:var(--t-sm-semi);}
+  table.trat code{background:var(--surface-2);}
+  .delta{
+    display:flex; flex-wrap:wrap; gap:1px; background:var(--line);
+    border:1px solid var(--line); border-radius:var(--r-card);
+    overflow:hidden; margin-top:24px;
+  }
+  .delta div{background:var(--surface); padding:12px 16px; flex:1 1 140px;
+    display:flex; flex-direction:column; gap:4px;}
+  .delta dt{font:var(--t-note); color:var(--faint); margin:0;
+    letter-spacing:.06em; text-transform:uppercase; text-wrap:balance;}
+  .delta dd{font:var(--t-md-strong); margin:0; margin-top:auto;
+    font-variant-numeric:tabular-nums;}
+  .delta dd s{color:var(--faint); font-weight:400;}
+  .delta dd em{font-style:normal; color:var(--ok-mark);}
+
+  /* figura — série única em primary-700, destaque de status em error-600.
+     Separação CVD 15,3 (protan) e contraste >=3:1 validados; a E04 leva rótulo
+     direto, então a identidade nunca depende só da cor. */
+  figure{margin:24px 0 0; padding:16px; background:var(--surface-2);
+    border-radius:var(--r-panel);}
+  figure figcaption{font:var(--t-note); color:var(--muted); margin-top:12px;}
+  .fig{width:100%; height:auto; display:block; overflow:visible;}
+  .fig .gl{stroke:var(--line-strong); stroke-width:1; opacity:.5;}
+  .fig .tk,.fig .ax{fill:var(--faint); font:var(--t-note); font-family:var(--sans);}
+  .fig .lb{fill:var(--muted); font:var(--t-note-strong); font-family:var(--sans);}
+  .fig .vl{fill:var(--ink); font:var(--t-note-strong); font-family:var(--sans);
+    font-variant-numeric:tabular-nums;}
+  .fig .rng{stroke:var(--fig-ok,#43798A); stroke-width:2; stroke-linecap:round; opacity:.45;}
+  .fig .dot{fill:var(--fig-ok,#43798A);}
+  .fig .crit .rng{stroke:var(--fig-crit,#C93824); opacity:.6;}
+  .fig .crit .dot{fill:var(--fig-crit,#C93824);}
+  .fig .crit .vl{fill:var(--fig-crit,#C93824);}
+  .fig .lg .rng{opacity:.45;}
+  .fig .lg text{fill:var(--faint);}
+  .fig .nada{stroke:var(--line-strong); stroke-width:1; stroke-dasharray:3 4;}
+  .fig .guia{stroke:var(--line-strong); stroke-width:1; stroke-dasharray:1 3; opacity:.7;}
+  .fig .lb{fill:var(--ink);}
+  .fig .vz{fill:var(--faint); font:var(--t-note); font-family:var(--sans);}
+
+  /* estrutura */
+  table.est{min-width:560px;}
+  table.est td{padding:10px 12px; font:var(--t-sm); vertical-align:top;}
+  table.est td:first-child{font:var(--t-sm-semi); white-space:nowrap;}
+  table.est td.sec{color:var(--muted);}
+  table.est code{background:var(--surface-2);}
+
+  /* volumetria */
+  table.vol{min-width:600px;}
+  table.vol td{padding:10px 12px; font:var(--t-sm); text-align:right;}
+  table.vol td:first-child{text-align:left; font:var(--t-sm-semi);}
+  table.vol th{text-align:right;}
+  table.vol th:first-child{text-align:left;}
+  table.vol tr.total td{font-weight:700;}
+  td.zero{color:var(--crit-mark);}
+  .volbar{display:block; height:4px; background:var(--accent);
+    border-radius:var(--r-bar); margin-top:4px; min-width:2px; opacity:.6;}
+
+  /* ---- achados ---- */
+  /* Card do DS: fundo neutral-100, borda neutral-300, raio 12, padding 16.
+     A gravidade fica por conta da pílula de estado (regra fundo-200/texto-800);
+     barra colorida na borda não existe no sistema. */
+  .finding{
+    margin-top:16px; padding:16px; background:var(--surface);
+    border:1px solid var(--line); border-radius:var(--r-card);
+  }
+  .fhead{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;}
+  /* Cards da seção Resolvido: fechados por padrão.
+     `<details>` nativo em vez de JavaScript — o estado fechado é o padrão do
+     elemento, então o card nasce colapsado mesmo antes de qualquer script
+     rodar, e o conteúdo continua acessível à busca do navegador e ao leitor de
+     tela. O marcador nativo é removido e trocado por uma seta própria, para o
+     cabeçalho do card continuar sendo o cabeçalho do card. */
+  .finding details summary{
+    cursor:pointer; list-style:none; display:block;
+    border-radius:var(--r-chip); outline-offset:4px;
+  }
+  .finding details summary::-webkit-details-marker{display:none;}
+  .finding details summary:focus-visible{outline:2px solid var(--accent);}
+  .finding .seta{
+    width:16px; height:16px; flex:none; color:var(--faint);
+    transition:transform 150ms ease-in-out; align-self:center;
+  }
+  .finding details[open] .seta{transform:rotate(90deg);}
+  .finding details summary:hover .seta{color:var(--accent);}
+  @media (prefers-reduced-motion:reduce){ .finding .seta{transition:none;} }
+  /* sem a data, a seta é que encosta na direita */
+  .finding details .fhead .quando{margin-left:auto;}
+
+  /* Data do achado, encostada na direita do cabeçalho do card. `margin-left:auto`
+     empurra só este elemento; o resto do cabeçalho segue o fluxo normal e
+     continua quebrando linha quando falta largura. Num relatório que vai à
+     quinta emissão com os mesmos cards, saber *quando* cada coisa foi apurada é
+     o que separa um achado novo de um que está ali desde setembro. */
+  .quando{
+    margin-left:auto; font:var(--t-note); color:var(--faint);
+    white-space:nowrap; font-variant-numeric:tabular-nums;
+  }
+  @media (max-width:520px){ .quando{margin-left:0;} }
+  .rank{font:var(--t-note-strong); color:var(--faint); letter-spacing:.08em;}
+  h3{font:var(--t-md-strong);}
+  h4{font:var(--t-sm-strong); margin:20px 0 0;}
+  .pill{
+    font:var(--t-note-strong); padding:4px 12px; border-radius:var(--r-pill);
+    white-space:nowrap;
+  }
+  .crit .pill{background:var(--crit-bg); color:var(--crit-fg);}
+  .warn .pill{background:var(--warn-bg); color:var(--warn-fg);}
+  .ok .pill{background:var(--ok-bg); color:var(--ok-fg);}
+  .finding:not(.crit):not(.warn):not(.ok) .pill{background:var(--surface-2); color:var(--muted);}
+
+  code{
+    font:var(--t-note); font-family:ui-monospace,'SF Mono',Menlo,monospace;
+    background:var(--surface-2); border-radius:var(--r-chip);
+    padding:2px 6px; word-break:break-word;
+  }
+  .tiles{
+    font:var(--t-sm); font-family:ui-monospace,'SF Mono',Menlo,monospace;
+    background:var(--surface-2); border-radius:var(--r-panel);
+    padding:12px 16px; margin-top:12px; overflow-x:auto; line-height:1.9;
+  }
+  .tiles b{
+    display:block; margin-bottom:4px; font:var(--t-note-strong);
+    font-family:var(--sans); color:var(--faint);
+    letter-spacing:.06em; text-transform:uppercase;
+  }
+  /* Dentro de um card a tabela não leva moldura — o card já é a moldura.
+     Antes ela vinha embrulhada num .scroller com borda, desenhando duas. */
+  .scroller.bare{border:0; background:transparent; border-radius:0; margin-top:12px;}
+  table.plain{width:100%; min-width:340px;}
+  table.plain th{padding:0 16px 8px 0;}
+  table.plain td{padding:10px 16px 10px 0; font:var(--t-sm); vertical-align:top;}
+  table.plain td:first-child{white-space:nowrap; font-weight:600;}
+  table.plain td.sup{color:var(--muted);}
+  table.plain code{background:var(--surface-2);}
+
+  /* InfoBanner do DS: fundo primary-200, texto primary-900, ícone de 16px,
+     raio large, sem borda e sem barra lateral. */
+  .action{
+    display:flex; align-items:flex-start; gap:8px;
+    margin-top:16px; padding:12px 16px;
+    background:var(--color-status-info-bg);
+    color:var(--color-status-info-fg);
+    border-radius:var(--r-panel); font:var(--t-note); line-height:1.6;
+  }
+  .action svg{width:16px; height:16px; flex:none; margin-top:2px;}
+  .action b{font:var(--t-note-strong); color:inherit;}
+  .action code{background:rgba(0,0,0,.08); color:inherit;}
+  :root[data-theme="dark"] .action code{background:rgba(255,255,255,.12);}
+  .note{
+    margin-top:48px; padding:24px; background:var(--surface);
+    border:1px solid var(--line-strong); border-radius:var(--r-card);
+  }
+  .note h2{border:none; padding:0;}
+  .note a{color:var(--accent);}
+  footer{
+    margin-top:48px; padding-top:16px; border-top:1px solid var(--line);
+    font:var(--t-note); color:var(--faint);
+    display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  @media (max-width:520px){
+    .wrap{padding-block:24px 64px; max-width:760px;}
+    .brand .org{text-align:left;}
+  }
+
+  /* ====== mapa de quadrículas =================================================
+     Todo o CSS do mapa vive sob .qmapa. Sem o escopo, cinco seletores sem classe
+     dele vazariam para o documento inteiro — `*{box-sizing}` sobretudo, já que o
+     layout deste relatório foi calculado em content-box. Os blocos :root e o
+     @media de prefers-color-scheme do modelo não vieram: um sistema de tokens
+     só, o do relatório. */
+  .qmapa *{box-sizing:border-box}
+  /* O documento espaca as proprias secoes por seletor de ELEMENTO —
+     `section{margin-top:64px}` —, e o app usa <section> nos componentes do DS
+     (ThemeBox, LegendPanel). A regra vazava para dentro do mapa e punha 64px de
+     vao branco no topo de cada um. O escopo `.qmapa` protege o documento das
+     regras do mapa; esta linha faz o caminho inverso, que faltava. */
+  .qmapa section{margin-top:0;}
+
+  /* ====== PlatformShell ======================================================
+     Portado de `components/shell/*` e `components/map/*` do DS do MapBiomas. As
+     medidas sao as dos componentes; o que muda e a entrega — CSS em vez do
+     style inline que o React escreve. No relatorio o shell vem `framed`
+     (moldura sobre mesa), que e a forma prescrita para a plataforma embutida
+     como previa; no avulso ele ocupa a janela. */
+  .qmapa .mb-shell{
+    display:flex; flex-direction:row; width:100%; min-height:0; overflow:hidden;
+    background:var(--color-neutral-100); font-family:var(--font-family-base);
+    border:1px solid var(--color-neutral-300);
+    border-radius:var(--border-radius-xlarge);
+    height:760px; margin-top:16px;
+    /* O trilho de secoes do documento e `position:sticky`, logo posicionado, e
+       elemento posicionado pinta por cima de um que nao e. Sem este par o shell
+       sai da coluna por baixo do trilho e os dois textos se sobrepoem. */
+    position:relative; z-index:1;
+  }
+  /* `.doc .qmapa`, nao `.qmapa`: sair da coluna de leitura e coisa do
+     RELATORIO, que tem um trilho de 184px mais 36 de vao a esquerda. O mesmo
+     componente na pagina avulsa nao tem coluna nenhuma de onde sair — e com a
+     regra solta ele ficava 220px mais largo que a janela, empurrando o painel
+     direito para fora e criando rolagem horizontal. */
+  @media (min-width:901px){
+    .doc .qmapa .mb-shell{margin-left:-220px; width:calc(100% + 220px);}
+  }
+
+  .qmapa .mb-shell-aside{
+    position:relative; display:flex; flex:0 0 340px; width:340px;
+    transition:flex-basis var(--transition-default), width var(--transition-default);
+  }
+  .qmapa .mb-shell[data-recolhida="true"] .mb-shell-aside{flex-basis:56px; width:56px;}
+  .qmapa .mb-side, .qmapa .mb-rail{
+    flex:1; min-width:0; display:flex; flex-direction:column; overflow:hidden;
+    background:var(--color-neutral-200); border-right:1px solid var(--color-neutral-300);
+  }
+  .qmapa .mb-shell[data-recolhida="true"] .mb-side{display:none;}
+  .qmapa .mb-rail{align-items:center; padding-top:16px;}
+
+  /* BrandBlock: 77px, compartilha o fundo da sidebar — nao e um header dentro dela. */
+  .qmapa .mb-brand{
+    flex:0 0 77px; height:77px; display:flex; align-items:center; gap:8px;
+    padding:16px; background:var(--color-neutral-200);
+  }
+  .qmapa .mb-brand-logo{flex:none; display:grid;}
+  .qmapa .mb-brand-logo svg{height:30px; width:auto; display:block;}
+  .qmapa .mb-brand-name{
+    position:relative; display:flex; align-items:center; min-width:0; flex:1;
+    font:var(--body-large-strong); color:var(--color-neutral-1000); letter-spacing:-.2px;
+  }
+  .qmapa .mb-brand-region{
+    position:absolute; left:1px; bottom:-9px; font-size:9px; line-height:12px;
+    font-weight:700; letter-spacing:.4px; text-transform:uppercase;
+    color:var(--color-neutral-700); white-space:nowrap;
+  }
+  /* SidebarToggle: 36px, sem fundo, neutral-700 -> neutral-1000 no hover. */
+  .qmapa .mb-side-toggle{
+    width:36px; height:36px; flex:none; display:grid; place-items:center;
+    border:0; background:transparent; color:var(--color-neutral-700); cursor:pointer;
+    border-radius:var(--border-radius-medium);
+    transition:color var(--transition-default), background-color var(--transition-default);
+  }
+  .qmapa .mb-side-toggle:hover{color:var(--color-neutral-1000); background:var(--color-neutral-300);}
+  .qmapa .mb-side-toggle svg{width:28px; height:28px;}
+  .qmapa .mb-side-toggle:focus-visible{outline:2px solid var(--color-action-focus-ring); outline-offset:-2px;}
+
+  /* SidebarBody: coluna, gap 8, padding lateral 16, rolagem propria. */
+  .qmapa .mb-side-body{
+    flex:1; min-height:0; overflow-y:auto; overflow-x:hidden; scrollbar-gutter:stable;
+    display:flex; flex-direction:column; gap:8px; padding:0 16px 16px;
+  }
+
+  /* ThemeBox, densidade `compact`. O que a define e o ANEL na cor do tema: a
+     caixa inteira brilha quando esta aberta ou tem camada ativa, e e isso — nao
+     um rotulo — que amarra a caixa ao dado desenhado no mapa. */
+  .qmapa .mb-themebox{
+    box-sizing:border-box; align-self:flex-start; width:100%;
+    background:var(--color-neutral-100); border-radius:var(--border-radius-xlarge);
+    padding:12px; transition:box-shadow var(--transition-default), padding var(--transition-default);
+  }
+  .qmapa .mb-themebox[data-aberta="true"]{padding:12px 12px 8px;}
+  .qmapa .mb-themebox[data-aberta="true"], .qmapa .mb-themebox[data-ativa="true"]{
+    box-shadow:0 0 0 2px var(--tbc), 0 0 11px -3px var(--tbc);
+  }
+  .qmapa .mb-tb-head{
+    display:flex; align-items:center; gap:8px; cursor:pointer; outline:none;
+    color:var(--color-neutral-700);
+  }
+  .qmapa .mb-tb-tema{display:grid; flex-shrink:0; color:var(--tbc);}
+  .qmapa .mb-tb-tema svg{width:20px; height:20px;}
+  .qmapa .mb-tb-nome{
+    font:var(--body-small-semibold); color:var(--color-neutral-700);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;
+  }
+  .qmapa .mb-themebox[data-aberta="true"] .mb-tb-nome{
+    font:var(--body-small-strong); text-transform:uppercase; letter-spacing:.04em;
+  }
+  .qmapa .mb-tb-fim{margin-left:auto; display:flex; align-items:center; gap:12px;}
+  .qmapa .mb-tb-olho-head{display:none; color:var(--color-primary-700);}
+  .qmapa .mb-themebox[data-aberta="false"][data-ativa="true"] .mb-tb-olho-head{display:grid;}
+  .qmapa .mb-tb-chev{
+    display:grid; color:var(--color-primary-700); transform:rotate(-90deg);
+    transition:transform var(--transition-default);
+  }
+  .qmapa .mb-themebox[data-aberta="true"] .mb-tb-chev{transform:rotate(0deg); color:var(--color-neutral-700);}
+  /* O Info vive na LINHA do cabecalho, junto do olho e do chevron — e onde o DS
+     poe o `meta` da ThemeBox. A faixa propria que eu tinha inventado abaixo do
+     titulo era um vao em branco dentro do card, com um icone solto na ponta.
+     Botao nu, sem moldura: dentro de componente denso o DS nao usa IconButton. */
+  .qmapa .mb-tb-info{
+    padding:0; border:0; background:none; cursor:pointer;
+    color:var(--color-neutral-600); display:grid;
+  }
+  .qmapa .mb-tb-info:hover{color:var(--color-neutral-1000);}
+  .qmapa .mb-tb-corpo{display:none; flex-direction:column; gap:2px;}
+  .qmapa .mb-themebox[data-aberta="true"] .mb-tb-corpo{display:flex;}
+  .qmapa .mb-themebox[data-aberta="true"] .mb-tb-corpo::before{
+    content:""; display:block; height:1px; background:var(--color-neutral-300); margin:8px 0 4px;
+  }
+  /* A camada ativa cresce: icone de 18px na cor do tema, rotulo em 14/700 e o
+     olho a direita. O resto fica em 12/400 neutral-600 — a hierarquia se resolve
+     por peso e cor, nao por recuo. */
+  .qmapa .mb-tb-layer{
+    display:flex; align-items:center; gap:8px; width:100%;
+    padding:6px 8px 6px 8px; border:0; background:transparent; cursor:pointer;
+    border-radius:var(--border-radius-medium); text-align:left;
+    font:var(--body-note); color:var(--color-neutral-600);
+    transition:background-color var(--transition-default);
+  }
+  .qmapa .mb-tb-layer:hover{background:var(--color-neutral-200);}
+  .qmapa .mb-tb-layer[aria-selected="true"], .qmapa .mb-tb-layer[aria-pressed="true"]{
+    padding:8px; color:var(--color-neutral-700);
+  }
+  .qmapa .mb-tb-ic{display:grid; place-items:center; flex-shrink:0; width:16px; color:inherit;}
+  .qmapa .mb-tb-ic svg{width:16px; height:16px;}
+  .qmapa .mb-tb-layer[aria-selected="true"] .mb-tb-ic,
+  .qmapa .mb-tb-layer[aria-pressed="true"] .mb-tb-ic{width:18px; color:var(--tbc);}
+  .qmapa .mb-tb-layer[aria-selected="true"] .mb-tb-ic svg,
+  .qmapa .mb-tb-layer[aria-pressed="true"] .mb-tb-ic svg{width:18px; height:18px;}
+  .qmapa .mb-tb-rot{font:inherit;}
+  .qmapa .mb-tb-layer[aria-selected="true"] .mb-tb-rot,
+  .qmapa .mb-tb-layer[aria-pressed="true"] .mb-tb-rot{font:var(--body-small-strong);}
+  .qmapa .mb-tb-olho{margin-left:auto; display:none; color:var(--color-primary-700); flex-shrink:0;}
+  .qmapa .mb-tb-olho svg{width:15px; height:15px;}
+  .qmapa .mb-tb-layer[aria-selected="true"] .mb-tb-olho,
+  .qmapa .mb-tb-layer[aria-pressed="true"] .mb-tb-olho{display:grid;}
+  .qmapa .mb-tb-layer:focus-visible{outline:2px solid var(--color-action-focus-ring); outline-offset:-2px;}
+
+  /* TopBar 45px e ContextBar 30px. A inversao e deliberada: a top bar e cinza e
+     recua, a barra de contexto e branca e encosta no conteudo. */
+  .qmapa .mb-shell-main{flex:1; min-width:0; display:flex; flex-direction:column;}
+  .qmapa .mb-topbar{
+    flex:0 0 45px; height:45px; padding:4px 16px;
+    background:var(--color-neutral-200); border-bottom:1px solid var(--color-neutral-300);
+  }
+  .qmapa .mb-topbar nav{display:flex; align-items:center; justify-content:space-between; gap:16px; height:36px;}
+  .qmapa .mb-topbar-tit{
+    font:var(--body-small-strong); color:var(--color-neutral-900);
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; flex:1 1 auto;
+  }
+  /* TerritorySearch: o primeiro filho obrigatorio do topBar, e **elastico, nunca
+     fixo** — e o controle mais usado da barra, entao cresce com a tela e encolhe
+     antes de qualquer outra coisa ceder. A plataforma pesquisa TERRITORIO, nao
+     camada: o resultado e um recorte, e e ele que a ContextBar passa a anunciar. */
+  /* Teto: sem ele o campo ocupa a largura livre inteira da barra, que num monitor
+     largo e meio metro de campo de busca para um termo de seis caracteres. */
+  .qmapa .mb-busca{
+    position:relative; flex:1 1 420px; min-width:200px; max-width:520px; display:flex;
+  }
+  .qmapa .mb-busca-campo{
+    position:relative; display:flex; align-items:center; height:34px; width:100%;
+    box-sizing:border-box; background:var(--color-neutral-100);
+    border:1px solid var(--color-neutral-300); border-radius:40px;
+    padding:0 1px 0 32px; gap:4px;
+  }
+  .qmapa .mb-busca-campo > svg{position:absolute; left:10px;}
+  .qmapa .mb-busca-campo input{
+    border:none; outline:none; font:var(--body-small); font-family:var(--font-family-base);
+    color:var(--color-neutral-1000); width:100%; background:transparent;
+  }
+  .qmapa .mb-busca-x{
+    flex:none; width:30px; height:30px; display:grid; place-items:center;
+    border:0; background:none; border-radius:var(--border-radius-rounded);
+    color:var(--color-neutral-700); cursor:pointer;
+  }
+  .qmapa .mb-busca-x:hover{background:var(--color-neutral-300);}
+  .qmapa .mb-busca-pop{
+    position:absolute; left:0; right:0; top:40px; z-index:var(--z-index-float-menu);
+    background:var(--color-neutral-100); border:1px solid var(--color-neutral-300);
+    border-radius:var(--border-radius-large); box-shadow:var(--shadow-medium);
+    padding:4px; max-height:300px; overflow-y:auto;
+  }
+  .qmapa .mb-busca-pop button{
+    display:flex; align-items:center; gap:8px; width:100%; text-align:left;
+    padding:8px 10px; border:0; background:none; cursor:pointer;
+    border-radius:var(--border-radius-medium);
+    font:var(--body-small); color:var(--color-neutral-1000);
+  }
+  .qmapa .mb-busca-pop button:hover{background:var(--color-neutral-200);}
+  .qmapa .mb-busca-pop button svg{flex:none; color:var(--color-neutral-600);}
+  .qmapa .mb-busca-pop i{
+    font:var(--body-note); font-style:normal; color:var(--color-neutral-600);
+    margin-left:auto; font-variant-numeric:tabular-nums;
+  }
+  .qmapa .mb-busca-vazio{padding:10px; font:var(--body-note); color:var(--color-neutral-600);}
+  .qmapa .mb-topbar-acoes{
+    flex:none; display:flex; align-items:center; gap:8px; font:var(--body-note);
+    color:var(--color-neutral-600); font-variant-numeric:tabular-nums; white-space:nowrap;
+  }
+  .qmapa .mb-contextbar{
+    flex:0 0 30px; height:30px; display:flex; align-items:center; gap:8px;
+    padding:4px 16px; background:var(--color-neutral-100);
+    border-bottom:1px solid var(--color-neutral-300);
+  }
+  .qmapa .mb-ctx-rot{
+    font:var(--body-small-strong); color:var(--color-primary-700);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .qmapa .mb-ctx-corpo{
+    font:var(--body-note); color:var(--color-neutral-600);
+    font-variant-numeric:tabular-nums; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  /* IconButton: 36x36, raio 100, fundo transparente — o chrome das barras.
+     Difere do chrome do mapa, onde o botao e branco com borda para flutuar. */
+  /* O link de expandir usa o mesmo IconButton; `<a>` so precisa perder o
+     sublinhado e herdar a cor, que num <button> ja vem. */
+  .qmapa a.mb-iconbt{text-decoration:none; color:var(--color-neutral-1000);}
+  .qmapa .mb-iconbt{
+    width:36px; height:36px; flex:none; display:grid; place-items:center;
+    border:0; border-radius:var(--border-radius-rounded); background:transparent;
+    color:var(--color-neutral-1000); cursor:pointer; padding:0;
+    transition:background-color var(--transition-default);
+  }
+  .qmapa .mb-iconbt:hover{background:var(--color-neutral-300);}
+  .qmapa .mb-iconbt[aria-pressed="true"]{background:var(--color-primary-200); color:var(--color-primary-700);}
+  .qmapa .mb-iconbt:focus-visible{outline:2px solid var(--color-action-focus-ring); outline-offset:-2px;}
+  /* Sol e lua no mesmo botao: `hidden` nao existe como propriedade em
+     SVGElement, so em HTMLElement — dai a troca por classe e regra. */
+  .mb-sol, .mb-lua{display:none;}
+  :root[data-theme="dark"] .mb-sol{display:block;}
+  :root:not([data-theme="dark"]) .mb-lua{display:block;}
+
+  /* O mapa tem piso; quem cede sao os paineis. */
+  .qmapa .mb-shell-row{flex:1; min-height:0; display:flex; flex-direction:row;}
+  .qmapa .mb-shell-map{flex:1; min-width:340px; position:relative; overflow:hidden; background:var(--mapa);}
+  .qmapa canvas{display:block; width:100%; height:100%; cursor:grab;}
+  .qmapa canvas.arrastando{cursor:grabbing;}
+  .qmapa .mb-shell-painel{
+    flex:0 1 401px; width:401px; min-width:320px; display:flex; flex-direction:column;
+    gap:16px; padding:16px; overflow-y:auto;
+    background:var(--color-neutral-200); border-left:1px solid var(--color-neutral-300);
+  }
+  .qmapa .mb-shell[data-painel="fora"] .mb-shell-painel{display:none;}
+
+  /* Os quatro slots de overlay, nas coordenadas do shell. */
+  .qmapa .mb-ov{position:absolute; display:flex;}
+  /* O painel cresce ate onde o mapa deixa, parando acima da faixa da dica. */
+  .qmapa .mb-ov-tl{
+    left:12px; top:12px; bottom:64px; z-index:6;
+    max-width:calc(100% - 24px); align-items:flex-start;
+  }
+  .qmapa .mb-ov-tr{right:16px; top:12px; z-index:6;}
+  .qmapa .mb-ov-br{right:16px; bottom:16px; z-index:8; flex-direction:column; align-items:center; gap:8px;}
+  .qmapa .mb-ov-bl{left:16px; right:68px; bottom:16px; z-index:7; flex-direction:column; align-items:stretch; gap:8px;}
+
+  /* Tabs do DS: sublinhado de 3px em primary-700 no item ativo. */
+  .qmapa .mb-tabs{display:flex; gap:16px; height:40px; flex:none;}
+  .qmapa .mb-tab{
+    display:flex; flex-direction:column; justify-content:flex-end; gap:6px;
+    background:none; border:none; padding:0; cursor:pointer; font:inherit;
+  }
+  .qmapa .mb-tab-label{
+    display:flex; align-items:center; gap:12px; font:var(--body-small);
+    color:var(--color-neutral-700); transition:color var(--transition-default);
+  }
+  .qmapa .mb-tab[data-selected="true"] .mb-tab-label{
+    font:var(--body-small-strong); color:var(--color-primary-700);
+  }
+  .qmapa .mb-tab-line{
+    height:0; background:var(--color-primary-700); border-radius:2px 2px 0 0;
+    transition:height var(--transition-default);
+  }
+  .qmapa .mb-tab[data-selected="true"] .mb-tab-line{height:3px;}
+  .qmapa .mb-tab:focus-visible{outline:2px solid var(--color-action-focus-ring); outline-offset:2px;}
+  .qmapa .mb-aba{display:flex; flex-direction:column; gap:8px;}
+
+  /* LegendPanel: cabecalho de 45px e corpo rolavel. A camada e a unidade que
+     recolhe — legenda inteira desaparece atras de uma linha so. */
+  /* LegendPanel, 362px. Duas decisoes definem o componente e nenhuma delas e
+     estetica: **a camada e a unidade que recolhe** — legenda, chave e nota
+     desaparecem atras de uma linha so — e **o checkbox E a amostra de cor**,
+     legenda e filtro resolvidos no mesmo pixel. Medida nao e classe: camada
+     continua perde o checkbox e recebe a ColorRamp no lugar da arvore. */
+  .qmapa .mb-legend{
+    width:362px; max-width:100%; max-height:100%; box-sizing:border-box;
+    background:var(--color-neutral-100);
+    border:1px solid var(--color-neutral-300); border-radius:var(--border-radius-large);
+    display:flex; flex-direction:column; overflow:hidden;
+  }
+  .qmapa .mb-legend-hd{
+    display:flex; align-items:center; justify-content:space-between;
+    height:45px; padding:12px 16px; box-sizing:border-box;
+    font:var(--body-small-strong); color:var(--color-neutral-900);
+  }
+  .qmapa .mb-legend-hd button{
+    padding:0; border:0; background:none; cursor:pointer;
+    color:var(--color-neutral-900); display:grid;
+  }
+  .qmapa .mb-legend-corpo{
+    padding:8px 16px; display:flex; flex-direction:column; gap:8px;
+    flex:1 1 auto; min-height:0; max-height:640px;
+    overflow-y:auto; scrollbar-gutter:stable;
+  }
+  .qmapa .mb-legend[data-recolhida="true"] .mb-legend-corpo{display:none;}
+  .qmapa .mb-lg-camada{display:flex; flex-direction:column; gap:8px;}
+  /* Separador do `emphasis: divided`: 1px recuado 8px de cada lado. O recuo e o
+     que o distingue dos divisores de cabecalho e rodape, que vazam de borda a borda. */
+  .qmapa .mb-lg-camada + .mb-lg-camada::before{
+    content:""; display:block; height:1px; margin:4px 8px;
+    background:var(--color-neutral-300);
+  }
+  .qmapa .mb-lg-linha{
+    display:flex; align-items:center; gap:8px;
+    color:var(--color-neutral-700); border-radius:var(--border-radius-medium);
+  }
+  .qmapa .mb-lg-ic{display:grid; place-items:center; width:19px; flex-shrink:0;}
+  .qmapa .mb-lg-nome{
+    flex:1 1 auto; min-width:0; font:var(--body-note-strong); text-transform:uppercase;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    cursor:pointer; user-select:none;
+  }
+  /* Os botoes so ocupam espaco quando aparecem: fora do hover a faixa tem largura
+     zero e o nome usa a linha inteira. Camada oculta e excecao — o olho fechado e
+     estado, nao acao, e fica sempre a mostra. O foco tambem revela, senao a faixa
+     ficaria inalcancavel pelo teclado. */
+  .qmapa .mb-lg-acoes{
+    display:flex; align-items:center; flex-shrink:0; overflow:hidden;
+    max-width:0; opacity:0;
+    transition:max-width var(--transition-default), opacity var(--transition-default);
+  }
+  .qmapa .mb-lg-linha:hover .mb-lg-acoes,
+  .qmapa .mb-lg-linha:focus-within .mb-lg-acoes,
+  .qmapa .mb-lg-camada[data-visivel="false"] .mb-lg-acoes{max-width:120px; opacity:1;}
+  .qmapa .mb-lg-olho, .qmapa .mb-lg-info, .qmapa .mb-lg-chev{
+    width:36px; height:36px; flex-shrink:0; padding:0; border:0; background:none;
+    border-radius:var(--border-radius-rounded); color:inherit;
+    display:grid; place-items:center; cursor:pointer;
+    transition:background-color var(--transition-default);
+  }
+  .qmapa .mb-lg-olho:hover, .qmapa .mb-lg-info:hover, .qmapa .mb-lg-chev:hover{
+    background:var(--color-primary-200);
+  }
+  .qmapa .mb-lg-olho[aria-pressed="true"]{background:var(--color-primary-200);}
+  .qmapa .mb-lg-chev{width:24px; height:24px; margin-right:-4px;}
+  .qmapa .mb-lg-chev svg{transition:transform var(--transition-default);}
+  .qmapa .mb-lg-camada[data-aberta="false"] .mb-lg-chev svg{transform:rotate(-90deg);}
+  .qmapa .mb-lg-olho .mb-ic-off{display:none;}
+  .qmapa .mb-lg-camada[data-visivel="false"] .mb-lg-olho .mb-ic-on{display:none;}
+  .qmapa .mb-lg-camada[data-visivel="false"] .mb-lg-olho .mb-ic-off{display:block;}
+  /* O corpo parte do mesmo prumo do nome: 8 do gap + 19 da caixa do icone + 8. */
+  .qmapa .mb-lg-corpo{display:flex; flex-direction:column; gap:8px; padding-left:35px;}
+  .qmapa .mb-lg-camada[data-aberta="false"] .mb-lg-corpo{display:none;}
+  .qmapa .mb-lg-cat{margin:0; font:var(--body-note-strong); color:var(--color-neutral-900);}
+  /* ColorRamp na forma `bar`: raio pequeno e borda preta de 1px — a mesma borda da
+     folha solida da legenda categorica —, 14px de altura, rotulo nas pontas, que
+     SAO as bordas da barra. */
+  .qmapa .mb-lg-rampa{display:flex; flex-direction:column; gap:6px; padding-right:4px;}
+  .qmapa .rampa{
+    position:relative; display:block; height:14px; box-sizing:border-box;
+    border-radius:var(--border-radius-small); border:1px solid var(--color-neutral-900);
+  }
+  .qmapa .legrot{
+    position:relative; display:flex; justify-content:space-between;
+    font:var(--body-note); color:var(--color-neutral-700); font-variant-numeric:tabular-nums;
+  }
+  /* O marcador aponta UM valor dentro da escala — aqui o patamar, que e um limiar
+     de referencia. Risco de 2px com halo da cor do fundo, que e o que o mantem
+     legivel sobre qualquer cor da rampa. */
+  .qmapa .mb-lg-marca{
+    position:absolute; top:-4px; bottom:-4px; width:2px; transform:translateX(-1px);
+    border-radius:1px; background:var(--color-neutral-1000);
+    box-shadow:0 0 0 2px var(--color-neutral-100); pointer-events:none;
+  }
+  .qmapa .mb-lg-marcarot{
+    position:absolute; transform:translateX(-50%); white-space:nowrap;
+    font:var(--body-note-strong); color:var(--color-neutral-1000);
+  }
+  /* ClassRow: o checkbox E a amostra de cor. Borda de classe solida e sempre
+     preta, nunca a cor da classe, e o check e branco por cima da mancha. */
+  .qmapa .mb-lg-classe{
+    position:relative; display:flex; align-items:center; gap:8px;
+    padding:4px 8px; margin:0 -8px; border-radius:var(--border-radius-large);
+    background:transparent; transition:background-color var(--transition-default);
+  }
+  .qmapa .mb-lg-classe:hover{background:var(--color-neutral-200);}
+  .qmapa .mb-lg-check{
+    width:16px; height:16px; flex-shrink:0; padding:0; cursor:pointer;
+    border-radius:var(--border-radius-rounded);
+    border:1px solid var(--color-neutral-900); background:var(--color-neutral-100);
+    display:grid; place-items:center;
+  }
+  .qmapa .mb-lg-check[aria-checked="true"]{background:var(--cor-classe);}
+  .qmapa .mb-lg-check svg{visibility:hidden;}
+  .qmapa .mb-lg-check[aria-checked="true"] svg{visibility:visible;}
+  .qmapa .mb-lg-conta{
+    margin-left:auto; font:var(--body-note); color:var(--color-neutral-600);
+    font-variant-numeric:tabular-nums;
+  }
+  .qmapa .mb-lg-rot{
+    font:var(--body-note-strong); color:var(--color-neutral-1000);
+    cursor:pointer; user-select:none;
+  }
+  .qmapa .mb-legend-nota{
+    margin:4px 0 0; font:var(--body-note); color:var(--color-neutral-700);
+    border-top:1px solid var(--color-neutral-300); padding-top:8px;
+  }
+  .qmapa .mb-legend-nota b{font:var(--body-note-strong); color:var(--color-neutral-1000);}
+
+  /* Chrome sobre o mapa: borda de 1px neutral-300 e --shadow-small, sem fundo
+     de cor. Vale para ferramentas, indicadores e dica. */
+  .qmapa .mb-ind{position:relative; display:block; width:36px; height:36px; flex:none;}
+  .qmapa .mb-ind-bt, .qmapa .mb-hint-bt{
+    position:absolute; right:0; top:0; width:36px; height:36px; box-sizing:border-box;
+    display:grid; place-items:center; padding:0;
+    border:1px solid var(--color-neutral-300); border-radius:var(--border-radius-rounded);
+    background:var(--color-neutral-100); color:var(--color-neutral-800);
+    box-shadow:var(--shadow-small); cursor:pointer;
+    transition:background-color var(--transition-default);
+  }
+  .qmapa .mb-ind-bt:hover, .qmapa .mb-hint-bt:hover{background:var(--color-primary-200);}
+  .qmapa .mb-ind-bt[aria-expanded="true"], .qmapa .mb-hint-bt[aria-expanded="true"]{background:var(--color-primary-200);}
+  /* O painel abre a ESQUERDA e o botao nao sai do lugar: chrome que se desloca
+     ao abrir faz o usuario perder o alvo que acabou de clicar. */
+  .qmapa .mb-ind-pop{
+    position:absolute; right:42px; top:0; box-sizing:border-box;
+    display:flex; align-items:center; gap:8px; padding:0 12px; min-height:36px;
+    border:1px solid var(--color-neutral-300); border-radius:var(--border-radius-large);
+    background:var(--color-neutral-100); box-shadow:var(--shadow-small); white-space:nowrap;
+  }
+  .qmapa .mb-ind-pop{
+    flex-direction:row-reverse; font:var(--body-note-strong);
+    color:var(--color-neutral-900); font-variant-numeric:tabular-nums; height:36px;
+  }
+  .qmapa .mb-ind-barra{
+    display:block; height:6px; border:1.5px solid var(--color-neutral-800); border-top:0;
+  }
+  .qmapa .mb-ind-form{
+    flex-direction:column; align-items:flex-start; gap:12px; padding:12px;
+    height:auto; white-space:normal; width:276px;
+  }
+  .qmapa .mb-form-campo{display:flex; flex-direction:column; gap:6px; width:100%;}
+  .qmapa .mb-form-campo b{
+    font:var(--body-note-strong); color:var(--color-neutral-700);
+    text-transform:uppercase; letter-spacing:.6px;
+  }
+  .qmapa .mb-meta{display:grid; grid-template-columns:1fr 1fr; gap:12px 16px; margin:0;}
+  .qmapa .mb-meta div{display:flex; flex-direction:column; gap:2px;}
+  .qmapa .mb-meta dt{
+    font:var(--body-note-strong); text-transform:uppercase; letter-spacing:.6px;
+    color:var(--color-neutral-600); margin:0;
+  }
+  .qmapa .mb-meta dd{
+    margin:0; font:var(--body-small-strong); color:var(--color-neutral-1000);
+    font-variant-numeric:tabular-nums;
+  }
+  .qmapa .mb-campo{display:flex; align-items:center; gap:8px;}
+  .qmapa input[type=range]{width:150px; accent-color:var(--color-action-bg);}
+  .qmapa .valor{font:var(--body-small-strong); font-variant-numeric:tabular-nums; min-width:3.2em;}
+
+  /* MapControls: o norte e o unico botao preto — ele reorienta o mapa inteiro;
+     os outros so ajustam ou informam. Zoom e um par, nao dois botoes. */
+  .qmapa .mb-mapctl{display:flex; flex-direction:column; align-items:center; gap:8px;}
+  .qmapa .mb-ctl-norte{
+    width:36px; height:36px; box-sizing:border-box; display:grid; place-items:center;
+    padding:0; border:1px solid var(--color-compass-outline);
+    border-radius:var(--border-radius-rounded); background:var(--color-compass-bg);
+    color:var(--color-compass-fg); box-shadow:var(--shadow-small-inverse); cursor:pointer;
+    transition:background-color var(--transition-default);
+  }
+  .qmapa .mb-ctl-norte:hover{background:var(--color-primary-700);}
+  .qmapa .mb-ctl-zoom{
+    width:36px; box-sizing:border-box; flex:none; display:flex; flex-direction:column;
+    border:1px solid var(--color-neutral-300); border-radius:var(--border-radius-rounded);
+    background:var(--color-neutral-100); box-shadow:var(--shadow-small); overflow:hidden;
+  }
+  .qmapa .mb-ctl-zoom button{
+    height:42px; display:grid; place-items:center; border:0; background:transparent;
+    color:var(--color-neutral-900); cursor:pointer;
+    transition:background-color var(--transition-default);
+  }
+  .qmapa .mb-ctl-zoom button:first-child{border-bottom:1px solid var(--color-neutral-200);}
+  .qmapa .mb-ctl-zoom button:hover{background:var(--color-primary-200);}
+
+  /* MapHint: a faixa cresce para o lado livre e o botao fica. */
+  .qmapa .mb-hint{position:relative; display:block; width:100%; height:36px; flex:none;}
+  .qmapa .mb-hint-bt{left:0; right:auto; bottom:0; top:auto;}
+  .qmapa .mb-hint-txt{
+    position:absolute; left:42px; right:auto; max-width:calc(100% - 42px);
+    bottom:0; min-height:36px; box-sizing:border-box;
+    display:flex; align-items:center; padding:8px 14px;
+    border:1px solid var(--color-neutral-300); border-radius:var(--border-radius-large);
+    background:var(--color-neutral-100); box-shadow:var(--shadow-small);
+    font:var(--body-note-strong); color:var(--color-neutral-900); text-wrap:pretty;
+  }
+
+  /* Modal: fundo esmaecido e uma superficie so, com a sombra do sistema. */
+  .qmapa .mb-modal{
+    position:absolute; inset:0; z-index:var(--z-index-modal);
+    display:grid; place-items:center; padding:24px;
+    background:color-mix(in srgb, var(--color-neutral-1000) 45%, transparent);
+  }
+  .qmapa .mb-modal-caixa{
+    width:min(420px, 100%); max-height:100%; overflow-y:auto;
+    background:var(--color-neutral-100); border:1px solid var(--color-neutral-300);
+    border-radius:var(--border-radius-xlarge); box-shadow:var(--shadow-medium);
+  }
+  .qmapa .mb-modal-hd{display:flex; align-items:center; gap:12px; padding:16px 16px 12px;}
+  .qmapa .mb-modal-hd h2{
+    margin:0; border:0; padding:0; flex:1; font:var(--body-medium-strong);
+    color:var(--color-neutral-900);
+  }
+  .qmapa .mb-modal-bd{padding:0 16px 16px; font:var(--body-small); color:var(--color-neutral-800);}
+  .qmapa .mb-modal-bd b{font:var(--body-small-strong); color:var(--color-neutral-1000);}
+
+  /* Card do DS na coluna de estatistica: fundo branco, borda neutral-300,
+     raio 12, padding 16. A moldura cinza e a coluna; o card e que e branco. */
+  .qmapa .mb-card{
+    background:var(--color-neutral-100); border:1px solid var(--color-neutral-300);
+    border-radius:var(--border-radius-xlarge); overflow:hidden; flex:none;
+  }
+  /* Card e Panel do DS poem o titulo e as `actions` na mesma linha, a acao
+     empurrada para a direita. A acao e um IconButton: 36px, raio 100, fundo
+     transparente, hover em neutral-300. O botao sem estilo nenhum que estava
+     aqui saia como caixa cinza do agente de usuario, embaixo do titulo. */
+  .qmapa .mb-card-hd{display:flex; align-items:center; gap:8px; padding:16px 16px 12px;}
+  .qmapa .mb-card-hd h2{flex:1 1 auto; min-width:0;}
+  .qmapa .mb-card-info{
+    flex:none; width:36px; height:36px; margin:-6px -8px -6px 0; padding:0;
+    border:0; border-radius:var(--border-radius-rounded); background:transparent;
+    color:var(--color-neutral-700); display:grid; place-items:center; cursor:pointer;
+    transition:background-color var(--transition-default);
+  }
+  .qmapa .mb-card-info:hover{background:var(--color-neutral-300);}
+  .qmapa .mb-card-info:focus-visible{outline:2px solid var(--color-action-focus-ring); outline-offset:-2px;}
+  .qmapa .mb-card-hd h2{
+    margin:0; border:0; padding:0; font:var(--body-medium-strong); color:var(--color-neutral-900);
+  }
+  .qmapa .mb-card-bd{padding:16px;}
+  .qmapa .mb-card-pe{padding:0 16px 16px;}
+  /* MetaStrip: tira de metadados de 12px, separada por ponto de 3px. */
+  .qmapa .mb-metastrip{
+    display:flex; align-items:center; flex-wrap:wrap; gap:6px;
+    font:var(--body-note); color:var(--color-neutral-600); min-width:0;
+  }
+  .qmapa .mb-metastrip span + span::before{
+    content:""; display:inline-block; width:3px; height:3px; margin-right:6px;
+    border-radius:var(--border-radius-rounded); background:var(--color-neutral-400);
+    vertical-align:middle;
+  }
+  .qmapa .mb-rp-metrics{border-top:1px solid var(--color-neutral-300); border-bottom:0;}
+
+  /* Chips de entrega: a pilula do DS em versao alternavel. */
+  .qmapa .chips{display:flex; flex-wrap:wrap; gap:6px;}
+  .qmapa .chips button{
+    font:var(--body-note-strong); padding:4px 12px;
+    border-radius:var(--border-radius-rounded); white-space:nowrap;
+    border:1px solid var(--color-neutral-300); background:var(--color-neutral-100);
+    color:var(--color-neutral-700); cursor:pointer; font-variant-numeric:tabular-nums;
+    transition:background-color var(--transition-default), color var(--transition-default);
+  }
+  .qmapa .chips button:hover:not([aria-pressed="true"]):not([disabled]){
+    background:var(--color-primary-100); border-color:var(--color-action-soft-border);
+  }
+  .qmapa .chips button[aria-pressed="true"]{
+    background:var(--color-action-bg); border-color:var(--color-action-bg);
+    color:var(--color-action-fg);
+  }
+  .qmapa .chips button[disabled]{opacity:.4; cursor:not-allowed;}
+  .qmapa .chips button:focus-visible{outline:2px solid var(--color-action-focus-ring); outline-offset:2px;}
+
+  /* Tooltip do mapa e marcas de dado. */
+  .qmapa .dica{position:absolute; pointer-events:none; max-width:250px; box-shadow:var(--shadow-small);}
+  .qmapa .dica table{border-collapse:collapse; margin-top:6px; width:100%;}
+  .qmapa .dica td{padding:1px 0; font-variant-numeric:tabular-nums;}
+  .qmapa .dica td:last-child{text-align:right; font-weight:700; padding-left:12px;}
+  .qmapa .pt{display:inline-block; width:10px; height:10px; border-radius:var(--border-radius-small); margin-right:8px; vertical-align:-1px;}
+  .qmapa .hist{display:flex; align-items:flex-end; gap:2px; height:72px; margin-top:6px;}
+  .qmapa .hist div{flex:1; border-radius:var(--border-radius-small) var(--border-radius-small) 0 0; min-height:1px;}
+  .qmapa .histrot{display:flex; justify-content:space-between; color:var(--color-neutral-600); font:var(--body-note); margin-top:4px;}
+  .qmapa .barra{display:block; height:7px; border-radius:var(--border-radius-small); min-width:2px;}
+  .qmapa .mb-rp-table th, .qmapa .mb-rp-table td{padding:8px 10px;}
+  .qmapa .mb-rp-table th:first-child, .qmapa .mb-rp-table td:first-child{padding-left:16px;}
+  .qmapa .mb-rp-table th:last-child, .qmapa .mb-rp-table td:last-child{padding-right:16px;}
+  .qmapa .mb-rp-table tbody tr{cursor:pointer; transition:background-color var(--transition-default);}
+  .qmapa .mb-rp-table tbody tr:hover{background:var(--color-primary-100);}
+  .qmapa .mb-rp-table tr.off td{color:var(--color-neutral-500);}
+  .qmapa .mb-rp-table tr.off .pt{opacity:.35;}
+  .qmapa .rodape-voo{color:var(--color-neutral-600); font:var(--body-note); margin:0; padding:12px 16px;}
+
+  /* Compensa dois vazamentos do CSS do relatorio para dentro do mapa, que o
+     escopo sozinho nao resolve porque sao seletores de elemento sem classe:
+     `h2` ganharia borda inferior no cabecalho dos paineis e `tbody tr` somaria
+     borda a que a tabela de plataforma ja desenha. O relatorio faz o mesmo em
+     `.note h2`. */
+  .qmapa .mb-rp-panel-hd h2{border:0; padding:0; font:var(--body-medium-strong);
+                            color:var(--color-neutral-900); margin:0;}
+  .qmapa .mb-rp-table tbody tr{border-bottom:0;}
+
+  .q-carga{display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+           margin-top:16px; color:var(--muted); font:var(--t-note);}
+  .q-carga button{font:var(--t-sm-semi); color:var(--accent); background:var(--surface);
+                  border:1px solid var(--line-strong); border-radius:var(--r-pill);
+                  padding:7px 16px; cursor:pointer;}
+  .q-carga button:hover{border-color:var(--accent);}
+  .q-carga button:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  /* ====== impressão ==========================================================
+     O documento é impresso e enviado. O mapa é instrumento, não afirmação: na
+     folha ficam as tabelas, que trazem os mesmos números. */
+  @media print{
+    .themebar, .rail, .q-carga, .qmapa .controles, .qmapa .mapabox,
+    .qmapa .ajuda, .qmapa .legenda, .qmapa .escala{display:none !important;}
+    .doc{display:block;}
+    .finding{break-inside:avoid;}
+    a[href^="#"]{text-decoration:none; color:inherit;}
+  }
+</style>
+<style>
+  /* A moldura do avulso. O relatorio e um documento de coluna estreita; este e
+     uma mini plataforma: barra superior, conteudo na largura da janela. Os
+     componentes sao os mesmos do relatorio — aqui so mora o layout de pagina. */
+  /* Em tela cheia o shell NAO vem `framed`: sem moldura, sem mesa, ocupando a
+     janela inteira. A moldura e a forma da previa dentro de outra tela, que e o
+     caso do relatorio — aqui a plataforma e a pagina. */
+  html, body{height:100%; background:var(--color-neutral-100);}
+  body{display:flex; flex-direction:column;}
+  .qmapa{flex:1; min-height:0; display:flex; flex-direction:column;}
+  .qmapa .mb-shell{flex:1; min-height:0; height:auto; margin:0; border:0; border-radius:0;}
+  .qmapa .q-carga{margin:0; padding:16px;}
+  .qmapa #q-mapa-caixa{flex:1; min-height:0; display:flex; flex-direction:column;}
+
+</style>
+
+<script type="application/json" id="q-meta">{"arquivo": "quadriculas.json", "peso": "1,5 MiB", "gerado_em": "2026-10-20"}</script>
+<div class="qmapa">
+        <p class="q-carga" id="q-estado">
+          <button type="button" id="q-carregar">Carregar o mapa</button>
+          <span id="q-estado-txt">Carrega sozinho quando você chega aqui.</span>
+        </p>
+        <div id="q-mapa-caixa" hidden>
+    <div class="envelope mb-shell" id="q-shell">
+
+      <!-- ===== sidebar: BrandBlock + SidebarBody com as ThemeBox compactas ===== -->
+      <div class="mb-shell-aside">
+        <aside class="mb-side">
+          <div class="mb-brand">
+            <button type="button" class="mb-side-toggle" id="q-recolher"
+                    aria-label="Recolher a navegação" aria-expanded="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke-width="1"/>
+                <path d="m13.5 8.5-3.5 3.5 3.5 3.5" stroke-width="2.5"/></svg>
+            </button>
+            <span class="mb-brand-logo"><svg viewBox="0 0 160 124" role="img" aria-label="MapBiomas 3D"><g transform="translate(2.165 -2.050) scale(1.02370 0.88589)"><polygon points="23.7,40.94 23.7,49.9 41.1,67.2 41.1,58.24" fill="#3F6A78"></polygon><polygon points="58.5,40.94 58.5,49.9 41.1,67.2 41.1,58.24" fill="#508799"></polygon><polygon points="41.1,23.64 23.7,40.94 41.1,58.24" fill="#75C7E0"></polygon><polygon points="41.1,23.64 58.5,40.94 41.1,58.24" fill="#62A5BB"></polygon>
+        <polygon points="59.7,31.975 59.7,49.9 77.1,67.2 77.1,49.275" fill="#3F6A78"></polygon><polygon points="94.5,31.975 94.5,49.9 77.1,67.2 77.1,49.275" fill="#508799"></polygon><polygon points="59.7,31.975 77.1,14.675 94.5,31.975" fill="#75C7E0"></polygon><polygon points="59.7,31.975 77.1,49.275 94.5,31.975" fill="#62A5BB"></polygon>
+        <polygon points="95.7,23.01 95.7,49.9 113.1,67.2 113.1,40.31" fill="#4C765E"></polygon><polygon points="130.5,23.01 130.5,49.9 113.1,67.2 113.1,40.31" fill="#629779"></polygon><polygon points="113.1,5.71 95.7,23.01 113.1,40.31" fill="#84CAA0"></polygon><polygon points="113.1,5.71 130.5,23.01 113.1,40.31" fill="#77B893"></polygon>
+        <polygon points="5.7,58.865 5.7,67.825 23.1,85.125 23.1,76.165" fill="#3F6A78"></polygon><polygon points="40.5,58.865 40.5,67.825 23.1,85.125 23.1,76.165" fill="#508799"></polygon><polygon points="5.7,58.865 23.1,41.565 40.5,58.865" fill="#75C7E0"></polygon><polygon points="5.7,58.865 23.1,76.165 40.5,58.865" fill="#62A5BB"></polygon>
+        <polygon points="41.7,49.9 41.7,67.825 59.1,85.125 59.1,67.2" fill="#4C765E"></polygon><polygon points="76.5,49.9 76.5,67.825 59.1,85.125 59.1,67.2" fill="#629779"></polygon><polygon points="59.1,32.6 41.7,49.9 59.1,67.2" fill="#84CAA0"></polygon><polygon points="59.1,32.6 76.5,49.9 59.1,67.2" fill="#77B893"></polygon>
+        <polygon points="77.7,40.935 77.7,67.825 95.1,85.125 95.1,58.235" fill="#7E7E45"></polygon><polygon points="112.5,40.935 112.5,67.825 95.1,85.125 95.1,58.235" fill="#A2A259"></polygon><polygon points="95.1,23.635 77.7,40.935 95.1,58.235" fill="#DCDB77"></polygon><polygon points="95.1,23.635 112.5,40.935 95.1,58.235" fill="#C5C56C"></polygon>
+        <polygon points="113.7,49.9 113.7,67.825 131.1,85.125 131.1,67.2" fill="#7E7E45"></polygon><polygon points="148.5,49.9 148.5,67.825 131.1,85.125 131.1,67.2" fill="#A2A259"></polygon><polygon points="131.1,32.6 113.7,49.9 131.1,67.2" fill="#DCDB77"></polygon><polygon points="131.1,32.6 148.5,49.9 131.1,67.2" fill="#C5C56C"></polygon>
+        <polygon points="23.7,67.825 23.7,85.75 41.1,103.05 41.1,85.125" fill="#3F6A78"></polygon><polygon points="58.5,67.825 58.5,85.75 41.1,103.05 41.1,85.125" fill="#508799"></polygon><polygon points="23.7,67.825 41.1,50.525 58.5,67.825" fill="#75C7E0"></polygon><polygon points="23.7,67.825 41.1,85.125 58.5,67.825" fill="#62A5BB"></polygon>
+        <polygon points="59.7,58.86 59.7,85.75 77.1,103.05 77.1,76.16" fill="#4C765E"></polygon><polygon points="94.5,58.86 94.5,85.75 77.1,103.05 77.1,76.16" fill="#629779"></polygon><polygon points="77.1,41.56 59.7,58.86 77.1,76.16" fill="#84CAA0"></polygon><polygon points="77.1,41.56 94.5,58.86 77.1,76.16" fill="#77B893"></polygon>
+        <polygon points="95.7,49.9 95.7,85.75 113.1,103.05 113.1,67.2" fill="#905723"></polygon><polygon points="130.5,49.9 130.5,85.75 113.1,103.05 113.1,67.2" fill="#B9702D"></polygon><polygon points="95.7,49.9 113.1,32.6 130.5,49.9" fill="#F7963F"></polygon><polygon points="95.7,49.9 113.1,67.2 130.5,49.9" fill="#E18837"></polygon>
+        <polygon points="5.7,94.715 5.7,103.675 23.1,120.975 23.1,112.015" fill="#3F6A78"></polygon><polygon points="40.5,94.715 40.5,103.675 23.1,120.975 23.1,112.015" fill="#508799"></polygon><polygon points="23.1,77.415 5.7,94.715 23.1,112.015" fill="#75C7E0"></polygon><polygon points="23.1,77.415 40.5,94.715 23.1,112.015" fill="#62A5BB"></polygon>
+        <polygon points="41.7,85.75 41.7,103.675 59.1,120.975 59.1,103.05" fill="#3F6A78"></polygon><polygon points="76.5,85.75 76.5,103.675 59.1,120.975 59.1,103.05" fill="#508799"></polygon><polygon points="41.7,85.75 59.1,68.45 76.5,85.75" fill="#75C7E0"></polygon><polygon points="41.7,85.75 59.1,103.05 76.5,85.75" fill="#62A5BB"></polygon>
+        <polygon points="77.7,76.785 77.7,103.675 95.1,120.975 95.1,94.085" fill="#7E7E45"></polygon><polygon points="112.5,76.785 112.5,103.675 95.1,120.975 95.1,94.085" fill="#A2A259"></polygon><polygon points="95.1,59.485 77.7,76.785 95.1,94.085" fill="#DCDB77"></polygon><polygon points="95.1,59.485 112.5,76.785 95.1,94.085" fill="#C5C56C"></polygon>
+        <polygon points="113.7,94.715 113.7,103.675 131.1,120.975 131.1,112.015" fill="#7E7E45"></polygon><polygon points="148.5,94.715 148.5,103.675 131.1,120.975 131.1,112.015" fill="#A2A259"></polygon><polygon points="113.7,94.715 131.1,77.415 148.5,94.715" fill="#DCDB77"></polygon><polygon points="113.7,94.715 131.1,112.015 148.5,94.715" fill="#C5C56C"></polygon>
+        <polygon points="23.7,103.675 23.7,121.6 41.1,138.9 41.1,120.975" fill="#3F6A78"></polygon><polygon points="58.5,103.675 58.5,121.6 41.1,138.9 41.1,120.975" fill="#508799"></polygon><polygon points="41.1,86.375 23.7,103.675 41.1,120.975" fill="#75C7E0"></polygon><polygon points="41.1,86.375 58.5,103.675 41.1,120.975" fill="#62A5BB"></polygon>
+        <polygon points="59.7,112.64 59.7,121.6 77.1,138.9 77.1,129.94" fill="#4C765E"></polygon><polygon points="94.5,112.64 94.5,121.6 77.1,138.9 77.1,129.94" fill="#629779"></polygon><polygon points="59.7,112.64 77.1,95.34 94.5,112.64" fill="#84CAA0"></polygon><polygon points="59.7,112.64 77.1,129.94 94.5,112.64" fill="#77B893"></polygon>
+        <polygon points="95.7,103.675 95.7,121.6 113.1,138.9 113.1,120.975" fill="#4C765E"></polygon><polygon points="130.5,103.675 130.5,121.6 113.1,138.9 113.1,120.975" fill="#629779"></polygon><polygon points="113.1,86.375 95.7,103.675 113.1,120.975" fill="#84CAA0"></polygon><polygon points="113.1,86.375 130.5,103.675 113.1,120.975" fill="#77B893"></polygon></g>
+        </svg></span>
+            <span class="mb-brand-name">MapBiomas<span class="mb-brand-region">Amazônia 3D</span></span>
+          </div>
+
+          <div class="mb-side-body">
+            <div class="mb-tabs" role="tablist">
+              <button type="button" class="mb-tab" data-aba="camadas" data-selected="true"
+                      role="tab" aria-selected="true">
+                <span class="mb-tab-label">Camadas</span><span class="mb-tab-line"></span>
+              </button>
+            </div>
+
+            <div class="mb-aba" data-aba="camadas" id="pintar">
+            <section class="mb-themebox" id="tb-ocupacao" data-cor="--theme-coverage"
+                     data-aberta="true">
+              <div class="mb-tb-head" tabindex="0" aria-expanded="true">
+                <span class="mb-tb-tema"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg></span>
+                <span class="mb-tb-nome">Ocupação de solo</span>
+                <span class="mb-tb-fim">
+                  <button type="button" class="mb-tb-info mb-info" data-k="tema"
+                          aria-label="Sobre este tema"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></button>
+                  <span class="mb-tb-olho-head" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span>
+                  <span class="mb-tb-chev"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
+                </span>
+              </div>
+              <div class="mb-tb-corpo" role="listbox">
+                <button type="button" class="mb-tb-layer" data-v="ocup:1" role="option" aria-selected="false"><span class="mb-tb-ic"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg></span><span class="mb-tb-rot">Célula de 1 × 1 m</span><span class="mb-tb-olho" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span></button>
+                <button type="button" class="mb-tb-layer" data-v="ocup:2" role="option" aria-selected="true"><span class="mb-tb-ic"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg></span><span class="mb-tb-rot">Célula de 2 × 2 m</span><span class="mb-tb-olho" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span></button>
+                <button type="button" class="mb-tb-layer" data-v="ocup:3" role="option" aria-selected="false"><span class="mb-tb-ic"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg></span><span class="mb-tb-rot">Célula de 3 × 3 m</span><span class="mb-tb-olho" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span></button>
+                <button type="button" class="mb-tb-layer" data-v="ocup:4" role="option" aria-selected="false"><span class="mb-tb-ic"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg></span><span class="mb-tb-rot">Célula de 4 × 4 m</span><span class="mb-tb-olho" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span></button>
+              </div>
+            </section>
+            </div>
+
+          </div>
+        </aside>
+
+        <nav class="mb-rail" aria-label="Navegação recolhida" hidden>
+          <button type="button" class="mb-side-toggle" id="q-expandir"
+                  aria-label="Expandir a navegação" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke-width="1"/>
+              <path d="m10.5 8.5 3.5 3.5-3.5 3.5" stroke-width="2.5"/></svg>
+          </button>
+        </nav>
+      </div>
+
+      <div class="mb-shell-main">
+        <!-- ===== TopBar 45px ===== -->
+        <header class="mb-topbar">
+          <nav>
+            <span class="mb-busca">
+              <span class="mb-busca-campo">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--color-neutral-700)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input id="q-busca" type="search" autocomplete="off"
+                       placeholder="Busque uma entrega ou um talhão"
+                       aria-label="Busque uma entrega ou um talhão">
+                <button type="button" class="mb-busca-x" id="q-busca-x" hidden
+                        aria-label="Limpar a busca"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+              </span>
+              <div class="mb-busca-pop" id="q-busca-pop" hidden role="listbox"></div>
+            </span>
+            <span class="mb-topbar-acoes">
+              <button type="button" class="seg mb-iconbt" data-tema-alterna data-tema="dark" aria-label="Tema escuro" title="Tema escuro"><svg class="mb-sol" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="mb-lua" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
+            </span>
+          </nav>
+        </header>
+
+        <!-- ===== ContextBar 30px: qual recorte o leitor esta vendo ===== -->
+        <div class="mb-contextbar">
+          <span class="mb-ctx-rot" id="q-ctx">Acervo AMAZONIA3D</span>
+        </div>
+
+        <div class="mb-shell-row">
+          <div class="mapabox mb-shell-map">
+            <canvas id="mapa"></canvas>
+
+            <!-- overlayTopLeft: LegendPanel -->
+            <div class="mb-ov mb-ov-tl">
+              <section class="mb-legend" id="q-legenda">
+                <div class="mb-legend-hd">
+                  <span>Camadas</span>
+                  <button type="button" id="q-legenda-recolher" aria-expanded="true"
+                          aria-label="Recolher o painel"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 20 5-5 5 5M7 4l5 5 5-5"/></svg></button>
+                </div>
+                <div class="mb-legend-corpo">
+                  <div class="mb-lg-camada" data-k="ocup" data-aberta="true"
+                       data-visivel="true">
+                    <div class="mb-lg-linha">
+                      <span class="mb-lg-ic"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></span>
+                      <span class="mb-lg-nome">Ocupação de solo</span>
+                      <span class="mb-lg-acoes">
+                        <button type="button" class="mb-lg-olho" aria-pressed="true"
+                                aria-label="Ocultar Ocupação de solo"><svg class="mb-ic-on" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="mb-ic-off" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg></button>
+                        <button type="button" class="mb-lg-info mb-info" data-k="ocup"
+                                aria-label="Sobre Ocupação de solo"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></button>
+                      </span>
+                      <button type="button" class="mb-lg-chev" aria-expanded="true"
+                              aria-label="Recolher Ocupação de solo"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                    </div>
+                    <div class="mb-lg-corpo"><p class="mb-lg-cat" id="legcat">Ocupação em 2×2 m</p><div class="mb-lg-rampa"><span class="rampa" id="rampa-ocup"><span class="mb-lg-marca" id="marca-ocup" hidden></span></span><span class="legrot"><span id="legmin-ocup">—</span><span id="legmax-ocup">—</span><span class="mb-lg-marcarot" id="legmeio-ocup" hidden></span></span></div></div>
+                  </div>
+                  <div class="mb-lg-camada" data-k="ver" data-aberta="true"
+                       data-visivel="false">
+                    <div class="mb-lg-linha">
+                      <span class="mb-lg-ic"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></span>
+                      <span class="mb-lg-nome">Versões do arquivo</span>
+                      <span class="mb-lg-acoes">
+                        <button type="button" class="mb-lg-olho" aria-pressed="false"
+                                aria-label="Mostrar Versões do arquivo"><svg class="mb-ic-on" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="mb-ic-off" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg></button>
+                        <button type="button" class="mb-lg-info mb-info" data-k="ver"
+                                aria-label="Sobre Versões do arquivo"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></button>
+                      </span>
+                      <button type="button" class="mb-lg-chev" aria-expanded="true"
+                              aria-label="Recolher Versões do arquivo"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                    </div>
+                    <div class="mb-lg-corpo"><p class="mb-lg-cat">Piso medido entre censos</p><div class="mb-lg-rampa"><span class="rampa" id="rampa-ver"></span><span class="legrot"><span id="legmin-ver">—</span><span id="legmax-ver">—</span></span></div></div>
+                  </div>
+                  <div class="mb-lg-camada" data-k="atu" data-aberta="true"
+                       data-visivel="false">
+                    <div class="mb-lg-linha">
+                      <span class="mb-lg-ic"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></span>
+                      <span class="mb-lg-nome">Última escrita</span>
+                      <span class="mb-lg-acoes">
+                        <button type="button" class="mb-lg-olho" aria-pressed="false"
+                                aria-label="Mostrar Última escrita"><svg class="mb-ic-on" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="mb-ic-off" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg></button>
+                        <button type="button" class="mb-lg-info mb-info" data-k="atu"
+                                aria-label="Sobre Última escrita"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></button>
+                      </span>
+                      <button type="button" class="mb-lg-chev" aria-expanded="true"
+                              aria-label="Recolher Última escrita"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                    </div>
+                    <div class="mb-lg-corpo"><p class="mb-lg-cat">Data de gravação no bucket</p><div class="mb-lg-rampa"><span class="rampa" id="rampa-atu"></span><span class="legrot"><span id="legmin-atu">—</span><span id="legmax-atu">—</span></span></div></div>
+                  </div>
+                  <div class="mb-lg-camada" data-k="limites" data-aberta="true"
+                       data-visivel="true">
+                    <div class="mb-lg-linha">
+                      <span class="mb-lg-ic"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 19.5 20.5 4.5"/></svg></span>
+                      <span class="mb-lg-nome">Limites das entregas</span>
+                      <span class="mb-lg-acoes">
+                        <button type="button" class="mb-lg-olho" aria-pressed="true"
+                                aria-label="Ocultar Limites das entregas"><svg class="mb-ic-on" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="mb-ic-off" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg></button>
+                        <button type="button" class="mb-lg-info mb-info" data-k="limites"
+                                aria-label="Sobre Limites das entregas"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></button>
+                      </span>
+                      <button type="button" class="mb-lg-chev" aria-expanded="true"
+                              aria-label="Recolher Limites das entregas"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                    </div>
+                    <div class="mb-lg-corpo"><div class="mb-lg-classe"><button type="button" class="mb-lg-check" role="checkbox" aria-checked="true" data-k="limites" aria-label="Contorno da entrega" style="--cor-classe:var(--contorno)"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="var(--color-neutral-100)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l5 5L20 6"/></svg></button><span class="mb-lg-rot" data-k="limites">Contorno da entrega</span></div></div>
+                  </div>
+                  <div class="mb-lg-camada" data-k="rotas" data-aberta="true"
+                       data-visivel="false">
+                    <div class="mb-lg-linha">
+                      <span class="mb-lg-ic"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 19.5 20.5 4.5"/></svg></span>
+                      <span class="mb-lg-nome">Rotas de voo</span>
+                      <span class="mb-lg-acoes">
+                        <button type="button" class="mb-lg-olho" aria-pressed="false"
+                                aria-label="Mostrar Rotas de voo"><svg class="mb-ic-on" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="mb-ic-off" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg></button>
+                        <button type="button" class="mb-lg-info mb-info" data-k="rotas"
+                                aria-label="Sobre Rotas de voo"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></button>
+                      </span>
+                      <button type="button" class="mb-lg-chev" aria-expanded="true"
+                              aria-label="Recolher Rotas de voo"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                    </div>
+                    <div class="mb-lg-corpo"><p class="mb-lg-cat">Altura elipsoidal da linha de voo</p><div class="mb-lg-classe"><button type="button" class="mb-lg-check" role="checkbox" aria-checked="true" data-f="0" aria-label="Abaixo de 600 m" style="--cor-classe:var(--rota-1)"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="var(--color-neutral-100)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l5 5L20 6"/></svg></button><span class="mb-lg-rot" data-f="0">Abaixo de 600 m</span><span class="mb-lg-conta" data-conta="0"></span></div><div class="mb-lg-classe"><button type="button" class="mb-lg-check" role="checkbox" aria-checked="true" data-f="1" aria-label="600 a 900 m" style="--cor-classe:var(--rota-2)"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="var(--color-neutral-100)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l5 5L20 6"/></svg></button><span class="mb-lg-rot" data-f="1">600 a 900 m</span><span class="mb-lg-conta" data-conta="1"></span></div><div class="mb-lg-classe"><button type="button" class="mb-lg-check" role="checkbox" aria-checked="true" data-f="2" aria-label="900 a 1.100 m" style="--cor-classe:var(--rota-3)"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="var(--color-neutral-100)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l5 5L20 6"/></svg></button><span class="mb-lg-rot" data-f="2">900 a 1.100 m</span><span class="mb-lg-conta" data-conta="2"></span></div><div class="mb-lg-classe"><button type="button" class="mb-lg-check" role="checkbox" aria-checked="true" data-f="3" aria-label="1.100 m ou mais" style="--cor-classe:var(--rota-4)"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="var(--color-neutral-100)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l5 5L20 6"/></svg></button><span class="mb-lg-rot" data-f="3">1.100 m ou mais</span><span class="mb-lg-conta" data-conta="3"></span></div></div>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <!-- overlayTopRight: filtros e configuracoes -->
+            <div class="mb-ov mb-ov-tr">
+              <span class="mb-ind" id="f-config">
+                <button type="button" class="mb-ind-bt" aria-expanded="false"
+                        title="Filtros e configurações"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg></button>
+                <span class="mb-ind-pop mb-ind-form" hidden>
+                  <span class="mb-form-campo">
+                    <b>Base do denominador</b>
+                    <span class="opc mb-rp-seg mb-rp-seg-largo" id="base">
+                      <button type="button" data-v="rel" aria-pressed="true">Com retorno</button>
+                      <button type="button" data-v="bbox" aria-pressed="false">Bounding box</button>
+                    </span>
+                  </span>
+                  <span class="mb-form-campo">
+                    <b>Patamar</b>
+                    <span class="mb-campo">
+                      <input type="range" id="patamar" min="30" max="100" step="1" value="70">
+                      <span class="valor" id="patamarv">70%</span>
+                    </span>
+                  </span>
+                  <span class="mb-form-campo">
+                    <b>Entregas</b>
+                    <span class="chips" id="chips"></span>
+                  </span>
+                </span>
+              </span>
+            </div>
+
+            <!-- overlayBottomRight: MapControls -->
+            <div class="mb-ov mb-ov-br">
+              <div class="mb-mapctl">
+                <button type="button" class="mb-ctl-norte" id="q-norte"
+                        title="Voltar o norte para cima"><svg viewBox="0 0 30 30" width="30" height="30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="none" stroke="var(--color-compass-outline)"/><polygon points="15,5 18.2,15 15,13 11.8,15" fill="var(--color-compass-needle)"/><polygon points="15,25 11.8,15 15,17 18.2,15" fill="var(--color-compass-fg)"/><text x="15" y="4.2" text-anchor="middle" font-size="5.2" font-weight="700" fill="var(--color-compass-fg)" font-family="var(--font-sans)">N</text></svg></button>
+                <div class="mb-ctl-zoom">
+                  <button type="button" id="q-mais" title="Aproximar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+                  <button type="button" id="q-menos" title="Afastar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+                </div>
+                <span class="mb-ind" id="ind-centro">
+                  <button type="button" class="mb-ind-bt" aria-expanded="false"
+                          title="Centro do mapa"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="2" x2="5" y1="12" y2="12"/><line x1="19" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="5"/><line x1="12" x2="12" y1="19" y2="22"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <span class="mb-ind-pop" hidden><span id="q-centro">—</span></span>
+                </span>
+                <span class="mb-ind" id="ind-escala">
+                  <button type="button" class="mb-ind-bt" aria-expanded="false"
+                          title="Escala do mapa"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17v1c0 .5-.5 1-1 1H3c-.5 0-1-.5-1-1v-1"/></svg></button>
+                  <span class="mb-ind-pop" hidden>
+                    <span id="escala">—</span><span class="mb-ind-barra" id="q-barra"></span>
+                  </span>
+                </span>
+              </div>
+            </div>
+
+            <!-- overlayBottomLeft: MapHint -->
+            <div class="mb-ov mb-ov-bl">
+              <span class="mb-hint">
+                <button type="button" class="mb-hint-bt" id="q-dica" aria-expanded="false"
+                        title="Dicas do mapa"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></button>
+                <span class="mb-hint-txt" id="q-dica-txt" hidden></span>
+              </span>
+            </div>
+          </div>
+
+          <!-- ===== painel direito: Cards no padrao da plataforma ===== -->
+          <div class="mb-shell-painel">
+            <div class="mb-card">
+              <div class="mb-card-hd"><h2>Seleção</h2></div>
+              <dl class="kpis mb-rp-metrics">
+                <div class="kpi mb-rp-metric">
+                  <dt class="mb-rp-metric-l">talhões</dt><dd class="mb-rp-metric-v" id="k-n">—</dd></div>
+                <div class="kpi mb-rp-metric">
+                  <dt class="mb-rp-metric-l">acima do patamar</dt><dd class="mb-rp-metric-v" id="k-acima">—</dd></div>
+                <div class="kpi mb-rp-metric">
+                  <dt class="mb-rp-metric-l">ocupação mediana</dt><dd class="mb-rp-metric-v" id="k-med">—</dd></div>
+                <div class="kpi mb-rp-metric">
+                  <dt class="mb-rp-metric-l">solo mediano</dt><dd class="mb-rp-metric-v" id="k-dens">—</dd></div>
+                <div class="kpi mb-rp-metric">
+                  <dt class="mb-rp-metric-l">reescritos</dt><dd class="mb-rp-metric-v" id="k-ver">—</dd></div>
+                <div class="kpi mb-rp-metric">
+                  <dt class="mb-rp-metric-l">escrita mais recente</dt><dd class="mb-rp-metric-v" id="k-atu">—</dd></div>
+              </dl>
+              <div class="mb-card-bd">
+                <p class="mb-rp-metric-l">Distribuição da ocupação</p>
+                <div class="hist" id="hist"></div>
+                <div class="histrot"><span>0%</span><span>50%</span><span>100%</span></div>
+              </div>
+              <!-- MetaStrip: a procedencia da medicao, no pe do card que ela
+                   qualifica. Separador de ponto, 12px, neutral-600. -->
+              <div class="mb-card-pe">
+                <span class="mb-metastrip" id="m-strip"></span>
+              </div>
+            </div>
+
+            <div class="mb-card" id="painel-voo" hidden>
+              <div class="mb-card-hd">
+                <h2>Ocupação × passadas de voo</h2>
+                <button type="button" class="mb-card-info mb-info"
+                        aria-label="Sobre esta contagem"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></button>
+              </div>
+              <table class="tab mb-rp-table">
+                <thead><tr><th>passadas</th><th class="n">talhões</th><th class="n">ocupação</th><th></th></tr></thead>
+                <tbody id="tabvoo"></tbody>
+              </table>
+            </div>
+
+            <div class="mb-card">
+              <div class="mb-card-hd"><h2>Por entrega</h2></div>
+              <table class="tab mb-rp-table">
+                <thead><tr><th>entrega</th><th class="n">n</th><th class="n">mediana</th><th class="n">≥ patamar</th></tr></thead>
+                <tbody id="tabela"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal: a informacao longa abre aqui, nao no corpo do card. -->
+      <div class="mb-modal" id="q-modal" hidden>
+        <div class="mb-modal-caixa" role="dialog" aria-modal="true" aria-labelledby="q-modal-tit">
+          <div class="mb-modal-hd">
+            <h2 id="q-modal-tit"></h2>
+            <button type="button" class="mb-iconbt" id="q-modal-x" aria-label="Fechar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+          </div>
+          <div class="mb-modal-bd" id="q-modal-txt"></div>
+        </div>
+      </div>
+    </div>
+        </div>
+      </div>
+<script>
+      // O tema já foi aplicado pelo script do topo. Aqui só refletimos o estado
+      // nos botões e gravamos a escolha. localStorage pode lançar (janela
+      // privada, site data bloqueado, captura de miniatura), então vai em
+      // try/catch: sem ele a página funciona, só não lembra entre visitas.
+      (function () {
+        var raiz = document.documentElement;
+        var seg = document.querySelector(".seg");
+
+        function pintar(tema) {
+          raiz.setAttribute("data-theme", tema);
+          // Pixel de canvas nao segue variavel CSS: o mapa tem de ser repintado
+          // a mao, senao fica nas cores do tema anterior ate o proximo pan.
+          if (window.qmapaRepintar) { window.qmapaRepintar(); }
+          Array.prototype.forEach.call(seg.querySelectorAll("button"), function (b) {
+            b.setAttribute("aria-pressed", String(b.dataset.tema === tema));
+          });
+          // O alternador de um botao so (sol/lua) nao tem estado para refletir:
+          // ele carrega o tema de DESTINO, entao vira a cada pintura.
+          var alt = document.querySelector("[data-tema-alterna]");
+          if (alt) {
+            var oposto = tema === "dark" ? "light" : "dark";
+            alt.dataset.tema = oposto;
+            alt.setAttribute("aria-label", oposto === "dark" ? "Tema escuro" : "Tema claro");
+            alt.setAttribute("title", alt.getAttribute("aria-label"));
+          }
+        }
+
+        pintar(raiz.getAttribute("data-theme") === "dark" ? "dark" : "light");
+
+        seg.addEventListener("click", function (ev) {
+          var b = ev.target.closest("button[data-tema]");
+          if (!b) { return; }
+          try { localStorage.setItem("auditoria-tema", b.dataset.tema); } catch (e) {}
+          pintar(b.dataset.tema);
+        });
+      })();
+    </script>
+<script>
+(function () {
+  "use strict";
+  // O mapa de quadriculas. O payload vive em arquivo irmao e so e buscado quando
+  // a secao se aproxima: sao 1,4 MiB contra 160 KiB de prosa, e quem le o
+  // relatorio sem abrir o mapa nunca os baixa. Testado em 10/10/2026 — arquivo
+  // irmao carrega por fetch e sobrevive a republicacao da pagina.
+  var META = JSON.parse(document.getElementById("q-meta").textContent);
+  // A secao do relatorio quando o mapa esta no relatorio; o proprio bloco do
+  // mapa quando ele e a pagina inteira (mapa_avulso.py). O script nao deve
+  // conhecer o documento que o hospeda — foi assim que o artefato avulso e o
+  // relatorio divergiram da primeira vez.
+  var secao = document.getElementById("quadricula") || document.querySelector(".qmapa");
+  var caixa = document.getElementById("q-mapa-caixa");
+  var aviso = document.getElementById("q-estado");
+  var botao = document.getElementById("q-carregar");
+  var texto = document.getElementById("q-estado-txt");
+  var pedido = false;
+  var agendado = false;
+
+  function montar(dados) {
+    var D = dados;
+  // --- indices da linha de talhao, na ordem que mapa_grade.py empacota
+  const I_ENT=0, I_ID=1, I_LON=2, I_LAT=3, I_DLON=4, I_DLAT=5, I_KM2=6, I_BORDA=7,
+        I_BBOX=8, I_REL=12, I_DENS=16, I_PCT=17, I_PASS=18, I_VER=19, I_ATU=20;
+
+  const T = D.talhoes;
+  const estado = {pintar:"ocup", base:"rel", nivel:2, patamar:D.patamar||70,
+                  ligadas:new Set(D.entregas), limites:true, rotas:false,
+                  faixas:new Set([0, 1, 2, 3])};
+
+  // --- as duas camadas de proveniencia: quantas versoes e quando foi a ultima
+  // O versionamento de objeto esta desligado no bucket, entao `versoes` nao vem
+  // do GCS: sai da comparacao dos censos de densidade datados deste repositorio,
+  // e por isso e um PISO. A nota sob o mapa diz isso ao leitor, e nao e detalhe:
+  // reescrita que preservou tamanho e contagem de pontos nao aparece aqui.
+  const VERBETE = {};
+  const DATAS = D.datas || [];
+  const temVer = !!D.tem_versoes && DATAS.length > 0;
+  const dia = i => (i >= 0 && i < DATAS.length) ? DATAS[i] : null;
+  const ptbr = s => s ? s.split("-").reverse().join("/") : "—";
+  const VER_MAX = temVer ? Math.max(2, ...T.map(t => t[I_VER] || 1)) : 2;
+  const ATU = (() => {
+    if (!temVer) return {a:0, b:1};
+    const ms = DATAS.map(d => Date.parse(d));
+    return {a: Math.min(...ms), b: Math.max(...ms)};
+  })();
+
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const val = (t, nivel=estado.nivel) => t[(estado.base==="rel"?I_REL:I_BBOX) + (nivel-1)];
+
+  // --- cor
+  // Tres escalas, uma por camada. A de ocupacao e divergente ancorada no
+  // patamar, com neutro no meio — nunca matiz no centro. As outras duas sao
+  // sequenciais de um matiz so, do neutro ao forte: contagem e idade tem ordem,
+  // nao polaridade, e inventar um polo ruim para "foi reescrito" seria afirmar
+  // o que o dado nao diz.
+  function mistura(a, b, f){
+    const h = s => [parseInt(s.slice(1,3),16), parseInt(s.slice(3,5),16), parseInt(s.slice(5,7),16)];
+    const [r1,g1,b1]=h(a), [r2,g2,b2]=h(b);
+    const m=(x,y)=>Math.round(x+(y-x)*f);
+    return `rgb(${m(r1,r2)},${m(g1,g2)},${m(b1,b2)})`;
+  }
+  function cor(v){
+    const t = estado.patamar, meio = css("--meio");
+    if (v >= t){
+      const f = t >= 100 ? 1 : Math.pow((v - t) / (100 - t), 0.6);
+      return mistura(meio, css("--bom-forte"), f);
+    }
+    const f = t <= 0 ? 1 : Math.pow((t - v) / t, 0.6);
+    return mistura(meio, css("--ruim-forte"), f);
+  }
+
+  function corSeq(f){
+    return mistura(css("--meio"), css("--bom-forte"), Math.pow(Math.min(1, Math.max(0, f)), 0.7));
+  }
+  function corVersao(t){
+    const v = t[I_VER];
+    if (v < 1) return css("--meio");
+    return corSeq(VER_MAX > 1 ? (v - 1) / (VER_MAX - 1) : 0);
+  }
+  function corData(t){
+    const d = dia(t[I_ATU]);
+    if (!d) return css("--meio");
+    return corSeq(ATU.b > ATU.a ? (Date.parse(d) - ATU.a) / (ATU.b - ATU.a) : 1);
+  }
+  const corDe = t => estado.pintar === "ver" ? corVersao(t)
+                   : estado.pintar === "atu" ? corData(t)
+                   : cor(val(t));
+
+  // --- projecao: equirretangular com correcao de aspecto pela latitude media
+  const lats = T.map(t=>t[I_LAT]), lons = T.map(t=>t[I_LON]);
+  const ext = {lo:Math.min(...lons), hi:Math.max(...lons), la:Math.min(...lats), lb:Math.max(...lats)};
+  const kx = Math.cos((ext.la+ext.lb)/2 * Math.PI/180);
+  const vista = {zoom:1, cx:(ext.lo+ext.hi)/2, cy:(ext.la+ext.lb)/2, base:1};
+
+  const FONTE = '"Open Sans", system-ui, -apple-system, sans-serif';
+  const col = t => +t[I_ID] % 1000, lin = t => Math.floor(+t[I_ID] / 1000);
+
+  // --- limite das entregas, do reticulado e nao do bbox
+  // O contorno sai da celula nominal da grade, nao do bounding box de cada talhao:
+  // talhao de borda tem bbox menor que a celula, e usar o bbox deixaria o contorno
+  // esburacado onde um talhao pequeno faz fronteira com um cheio. Um ajuste linear
+  // de lon por coluna e de lat por linha reconstroi a celula — o reticulado e
+  // regular o bastante para isso, e o erro fica em metros.
+  const malha = (() => {
+    const cheios = T.filter(t => !t[I_BORDA]);
+    const fit = (xs, ys) => {
+      const n = xs.length;
+      const mx = xs.reduce((a, b) => a + b, 0) / n, my = ys.reduce((a, b) => a + b, 0) / n;
+      let num = 0, den = 0;
+      for (let i = 0; i < n; i++) { num += (xs[i] - mx) * (ys[i] - my); den += (xs[i] - mx) ** 2; }
+      const b = den ? num / den : 0;
+      return {a: my - b * mx, b};
+    };
+    const fl = fit(cheios.map(col), cheios.map(t => t[I_LON]));
+    const ft = fit(cheios.map(lin), cheios.map(t => t[I_LAT]));
+    return {lon: c => fl.a + fl.b * c, lat: l => ft.a + ft.b * l,
+            dlon: Math.abs(fl.b) / 2, dlat: Math.abs(ft.b) / 2};
+  })();
+
+  // aresta de celula que nao faz fronteira com celula da mesma entrega: da o
+  // contorno exato da uniao, sem biblioteca de geometria
+  const limites = (() => {
+    const celulas = new Map(), centro = new Map();
+    for (const t of T) {
+      const e = D.entregas[t[I_ENT]];
+      if (!celulas.has(e)) { celulas.set(e, new Set()); centro.set(e, [0, 0, 0]); }
+      celulas.get(e).add(`${lin(t)}_${col(t)}`);
+      const c = centro.get(e); c[0] += t[I_LON]; c[1] += t[I_LAT]; c[2]++;
+    }
+    const segs = new Map(), rotulo = new Map();
+    for (const [e, cels] of celulas) {
+      const s = [];
+      for (const k of cels) {
+        const [l, c] = k.split("_").map(Number);
+        const o = malha.lon(c) - malha.dlon, le = malha.lon(c) + malha.dlon;
+        const su = malha.lat(l) - malha.dlat, no = malha.lat(l) + malha.dlat;
+        if (!cels.has(`${l}_${c - 1}`)) s.push(o, su, o, no);
+        if (!cels.has(`${l}_${c + 1}`)) s.push(le, su, le, no);
+        if (!cels.has(`${l - 1}_${c}`)) s.push(o, no, le, no);
+        if (!cels.has(`${l + 1}_${c}`)) s.push(o, su, le, su);
+      }
+      segs.set(e, s);
+      const c = centro.get(e);
+      rotulo.set(e, [c[0] / c[2], c[1] / c[2]]);
+    }
+    return {segs, rotulo};
+  })();
+
+  const cv = document.getElementById("mapa"), ctx = cv.getContext("2d");
+  let W=0, H=0;
+  function dimensionar(){
+    const r = cv.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio||1, 2);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const sx = W / ((ext.hi-ext.lo)*kx || 1), sy = H / ((ext.lb-ext.la) || 1);
+    vista.base = Math.min(sx, sy) * 0.94;
+    desenhar();
+  }
+  const px = t => [W/2 + (t - vista.cx)*kx*vista.base*vista.zoom, 0];
+  const pxy = (lon,lat) => [W/2 + (lon-vista.cx)*kx*vista.base*vista.zoom,
+                            H/2 - (lat-vista.cy)*vista.base*vista.zoom];
+  const inv = (x,y) => [vista.cx + (x-W/2)/(kx*vista.base*vista.zoom),
+                        vista.cy - (y-H/2)/(vista.base*vista.zoom)];
+
+  function visiveis(){ return T.filter(t => estado.ligadas.has(D.entregas[t[I_ENT]])); }
+
+  function reticula(){
+    const [lo0,la1] = inv(0,0), [lo1,la0] = inv(W,H);
+    const span = Math.max(lo1-lo0, la1-la0);
+    const passo = span>8 ? 2 : span>4 ? 1 : span>1.5 ? 0.5 : span>0.6 ? 0.2 : 0.1;
+    ctx.strokeStyle = css("--grade"); ctx.lineWidth = 1;
+    ctx.fillStyle = css("--faint"); ctx.font = "12px " + FONTE;
+    ctx.beginPath();
+    for(let v=Math.ceil(lo0/passo)*passo; v<=lo1; v+=passo){
+      const [x] = pxy(v,0); ctx.moveTo(x,0); ctx.lineTo(x,H);
+    }
+    for(let v=Math.ceil(la0/passo)*passo; v<=la1; v+=passo){
+      const [,y] = pxy(0,v); ctx.moveTo(0,y); ctx.lineTo(W,y);
+    }
+    ctx.stroke();
+    for(let v=Math.ceil(lo0/passo)*passo; v<=lo1; v+=passo){
+      const [x] = pxy(v,0); ctx.fillText(v.toFixed(passo<1?1:0)+"°", x+3, H-5);
+    }
+    for(let v=Math.ceil(la0/passo)*passo; v<=la1; v+=passo){
+      const [,y] = pxy(0,v); ctx.fillText(v.toFixed(passo<1?1:0)+"°", 4, y-3);
+    }
+  }
+
+  function desenhar(){
+    ctx.clearRect(0,0,W,H);
+    reticula();
+    const s = vista.base*vista.zoom;
+    for(const t of visiveis()){
+      const [x,y] = pxy(t[I_LON]-t[I_DLON], t[I_LAT]+t[I_DLAT]);
+      const w = Math.max(t[I_DLON]*2*kx*s, 1.6), h = Math.max(t[I_DLAT]*2*s, 1.6);
+      ctx.fillStyle = corDe(t);
+      ctx.fillRect(x, y, w, h);
+    }
+    if (estado.rotas) desenharRotas();
+    if (estado.limites) contornos();
+    // escala: quantos pixels vale 1 km, que e o lado de um talhao
+    const porKm = s / 111.32;
+    document.getElementById("escala").textContent = porKm >= 1
+      ? `1 km = ${porKm.toFixed(porKm < 10 ? 1 : 0)} px`
+      : `10 km = ${(porKm * 10).toFixed(1)} px`;
+    // A barra do indicador de escala tem a largura do que ela mede, entre 24 e
+    // 96px: barra que nao corresponde a distancia e enfeite, nao escala.
+    const barra = document.getElementById("q-barra");
+    if (barra) {
+      barra.style.width = Math.round(Math.min(96, Math.max(24, porKm >= 1 ? porKm : porKm * 10))) + "px";
+    }
+    const centro = document.getElementById("q-centro");
+    if (centro) {
+      centro.textContent = `${vista.cy.toFixed(3)}°, ${vista.cx.toFixed(3)}°`;
+    }
+  }
+
+  // As quatro faixas de altura de voo. Os cortes nao sao redondos por gosto: a
+  // distribuicao das 1.156 linhas tem dois patamares claros — 659 linhas entre
+  // 600 e 900 m e 293 acima de 1.100 — e os cortes caem nos vales entre eles.
+  // Abaixo de 600 m sao 25 arquivos que nao sao linha de levantamento: tem
+  // dispersao de centenas de metros, isto e, sao subida, descida ou taxi.
+  const FAIXAS_ALT = [
+    {rot: "Abaixo de 600 m", cor: "--rota-1", lim: 600},
+    {rot: "600 a 900 m",     cor: "--rota-2", lim: 900},
+    {rot: "900 a 1.100 m",   cor: "--rota-3", lim: 1100},
+    {rot: "1.100 m ou mais", cor: "--rota-4", lim: Infinity},
+  ];
+  // Sem altura no payload, tudo cai na faixa do meio em vez de sumir do mapa.
+  const faixaDe = r => (typeof r.h !== "number") ? 1
+    : FAIXAS_ALT.findIndex(f => r.h < f.lim);
+
+  function desenharRotas(){
+    // Desenhado ANTES dos limites e depois das quadriculas: a rota e contexto, nao
+    // dado. Linha fina e translucida porque sao 1.156 trajetorias — opaca viraria
+    // uma mancha e esconderia justamente a ocupacao que o mapa existe para mostrar.
+    // Opacidade cresce com o zoom porque a sobreposicao encolhe com ele: na
+    // extensao toda sao 1.156 linhas sobre 150 km, uma a cada 0,8 px, e qualquer
+    // opacidade util vira mancha que esconde a ocupacao. Aproximando, as linhas se
+    // separam e podem aparecer de verdade.
+    ctx.save();
+    ctx.globalAlpha = Math.min(0.95, 0.28 * Math.pow(vista.zoom, 0.40));
+    ctx.lineWidth = 1;
+    ctx.lineJoin = "round"; ctx.lineCap = "round";
+    // Um traco por faixa: trocar strokeStyle no meio de um path pinta o path
+    // inteiro com a ultima cor, entao cada faixa precisa do proprio beginPath.
+    for (let f = 0; f < FAIXAS_ALT.length; f++){
+      if (!estado.faixas.has(f)) { continue; }
+      ctx.strokeStyle = css(FAIXAS_ALT[f].cor);
+      ctx.beginPath();
+      for (const r of (D.rotas || [])){
+        if (faixaDe(r) !== f) { continue; }
+        const p = r.p;
+        for (let i = 0; i < p.length; i += 2){
+          const [x, y] = pxy(p[i], p[i + 1]);
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+      }
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function contornos(){
+    ctx.lineWidth = 1.4;
+    ctx.strokeStyle = css("--contorno");
+    ctx.beginPath();
+    for (const e of D.entregas){
+      if (!estado.ligadas.has(e)) continue;
+      const s = limites.segs.get(e) || [];
+      for (let i = 0; i < s.length; i += 4){
+        const [x1, y1] = pxy(s[i], s[i + 1]);
+        const [x2, y2] = pxy(s[i + 2], s[i + 3]);
+        ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+      }
+    }
+    ctx.stroke();
+
+    // rotulo no centroide: sem ele o contorno diz "aqui muda de entrega" mas nao
+    // qual. Halo da cor do fundo porque o texto cai sobre o dado.
+    ctx.font = "700 11px " + FONTE;
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.lineJoin = "round";
+    for (const e of D.entregas){
+      if (!estado.ligadas.has(e)) continue;
+      const c = limites.rotulo.get(e); if (!c) continue;
+      const [x, y] = pxy(c[0], c[1]);
+      if (x < 8 || x > W - 8 || y < 8 || y > H - 8) continue;
+      const txt = e.replace("ENTREGA_", "E");
+      ctx.lineWidth = 3.5; ctx.strokeStyle = css("--mapa"); ctx.strokeText(txt, x, y);
+      ctx.fillStyle = css("--ink"); ctx.fillText(txt, x, y);
+    }
+    ctx.textAlign = "start"; ctx.textBaseline = "alphabetic";
+  }
+
+  // --- hash espacial de 0,1 grau para o hit test; sem ele seriam 9.300 testes por movimento
+  const cesto = new Map();
+  const chave = (lon,lat) => `${Math.floor(lon*10)}_${Math.floor(lat*10)}`;
+  T.forEach((t,i) => {
+    const k = chave(t[I_LON], t[I_LAT]);
+    if(!cesto.has(k)) cesto.set(k, []);
+    cesto.get(k).push(i);
+  });
+  function achar(lon,lat){
+    const bi = Math.floor(lon*10), bj = Math.floor(lat*10);
+    for(let a=-1;a<=1;a++) for(let b=-1;b<=1;b++){
+      for(const i of (cesto.get(`${bi+a}_${bj+b}`)||[])){
+        const t = T[i];
+        if(!estado.ligadas.has(D.entregas[t[I_ENT]])) continue;
+        if(Math.abs(lon-t[I_LON])<=t[I_DLON] && Math.abs(lat-t[I_LAT])<=t[I_DLAT]) return t;
+      }
+    }
+    return null;
+  }
+
+  const dica = document.createElement("div");
+  dica.className = "dica mb-rp-tip"; dica.hidden = true;
+  document.querySelector(".mapabox").appendChild(dica);
+
+  function mostrarDica(t, x, y){
+    if(!t){ dica.hidden = true; return; }
+    const pares = [1,2,3,4].map(n => `<tr><td>${n}×${n} m</td><td>${fpct(val(t,n))}</td></tr>`).join("");
+    dica.innerHTML = `<b>NP_${t[I_ID]}</b> · ${D.entregas[t[I_ENT]]}`
+      + `<table>${pares}`
+      + `<tr><td>solo</td><td>${t[I_DENS].toFixed(2)} pts/m²</td></tr>`
+      + `<tr><td>pontos de solo</td><td>${t[I_PCT].toFixed(1)}%</td></tr>`
+      + `<tr><td>área</td><td>${t[I_KM2].toFixed(3)} km²${t[I_BORDA]?" (borda)":""}</td></tr>`
+      + (t[I_PASS] >= 0 ? `<tr><td>passadas de voo</td><td>${t[I_PASS]}</td></tr>` : "")
+      + (temVer && t[I_VER] > 0 ? `<tr><td>versões</td><td>${t[I_VER]}${t[I_VER] > 1 ? "" : ""}</td></tr>` : "")
+      + (temVer && dia(t[I_ATU]) ? `<tr><td>última escrita</td><td>${ptbr(dia(t[I_ATU]))}</td></tr>` : "")
+      + `</table>`;
+    dica.hidden = false;
+    const r = dica.getBoundingClientRect();
+    dica.style.left = Math.min(x+14, W-r.width-8) + "px";
+    dica.style.top  = Math.min(y+14, H-r.height-8) + "px";
+  }
+
+  let arrastando = false, ax=0, ay=0;
+  cv.addEventListener("mousedown", e => { arrastando=true; ax=e.offsetX; ay=e.offsetY; cv.classList.add("arrastando"); });
+  window.addEventListener("mouseup", () => { arrastando=false; cv.classList.remove("arrastando"); });
+  cv.addEventListener("mouseleave", () => mostrarDica(null));
+  cv.addEventListener("mousemove", e => {
+    if(arrastando){
+      const s = vista.base*vista.zoom;
+      vista.cx -= (e.offsetX-ax)/(kx*s); vista.cy += (e.offsetY-ay)/s;
+      ax=e.offsetX; ay=e.offsetY; desenhar(); mostrarDica(null); return;
+    }
+    const [lon,lat] = inv(e.offsetX, e.offsetY);
+    mostrarDica(achar(lon,lat), e.offsetX, e.offsetY);
+  });
+  cv.addEventListener("wheel", e => {
+    e.preventDefault();
+    const [lon0,lat0] = inv(e.offsetX, e.offsetY);
+    vista.zoom = Math.min(400, Math.max(1, vista.zoom * (e.deltaY<0 ? 1.18 : 1/1.18)));
+    const [lon1,lat1] = inv(e.offsetX, e.offsetY);
+    vista.cx += lon0-lon1; vista.cy += lat0-lat1;
+    desenhar(); mostrarDica(null);
+  }, {passive:false});
+  // Os botoes do MapControls e o duplo clique fazem a mesma coisa: uma funcao so.
+  function reset(){
+    vista.zoom=1; vista.cx=(ext.lo+ext.hi)/2; vista.cy=(ext.la+ext.lb)/2;
+    desenhar(); mostrarDica(null);
+  }
+  function zoom(f){
+    vista.zoom = Math.min(400, Math.max(1, vista.zoom * f));
+    desenhar(); mostrarDica(null);
+  }
+  cv.addEventListener("dblclick", reset);
+
+  // --- painel
+  // uma convencao de numero no documento inteiro: decimal com virgula
+  const fpct = v => v.toFixed(1).replace(".", ",") + "%";
+  const mediana = a => { if(!a.length) return 0; const s=[...a].sort((x,y)=>x-y);
+    const m=s.length>>1; return s.length%2 ? s[m] : (s[m-1]+s[m])/2; };
+
+  function painel(){
+    const vis = visiveis();
+    const cheios = vis.filter(t=>!t[I_BORDA]);
+    const base = cheios.length ? cheios : vis;
+    const vs = base.map(t=>val(t));
+    const acima = vs.filter(v=>v>=estado.patamar).length;
+    document.getElementById("k-n").textContent = vis.length.toLocaleString("pt-BR");
+    document.getElementById("k-acima").textContent = vs.length ? fpct(acima/vs.length*100) : "—";
+    document.getElementById("k-med").textContent = vs.length ? fpct(mediana(vs)) : "—";
+    document.getElementById("k-dens").textContent = base.length
+      ? mediana(base.map(t=>t[I_DENS])).toFixed(2).replace(".", ",") : "—";
+    const reescritos = temVer ? vis.filter(t => t[I_VER] > 1).length : 0;
+    document.getElementById("k-ver").textContent = temVer
+      ? reescritos.toLocaleString("pt-BR") : "—";
+    const quando = temVer ? vis.map(t => dia(t[I_ATU])).filter(Boolean).sort() : [];
+    document.getElementById("k-atu").textContent =
+      quando.length ? ptbr(quando[quando.length - 1]) : "—";
+
+    const faixas = new Array(20).fill(0);
+    for(const v of vs) faixas[Math.min(19, Math.floor(v/5))]++;
+    const topo = Math.max(1, ...faixas);
+    document.getElementById("hist").innerHTML = faixas.map((n,i)=>{
+      const centro = i*5+2.5;
+      return `<div style="height:${Math.max(1, n/topo*100)}%;background:${cor(centro)}"
+               title="${i*5}–${i*5+5}%: ${n} talhões"></div>`;
+    }).join("");
+
+    const corpo = D.entregas.map(e => {
+      const meus = T.filter(t=>D.entregas[t[I_ENT]]===e);
+      const c = meus.filter(t=>!t[I_BORDA]); const b = c.length?c:meus;
+      const v = b.map(t=>val(t));
+      const pct = v.length ? (v.filter(x=>x>=estado.patamar).length/v.length*100) : 0;
+      const on = estado.ligadas.has(e);
+      return `<tr data-e="${e}" class="${on?"":"off"}">
+        <td><span class="pt" style="background:${cor(mediana(v))}"></span>${e.replace("ENTREGA_","E")}</td>
+        <td class="n">${meus.length}</td><td class="n">${fpct(mediana(v))}</td>
+        <td class="n">${pct.toFixed(0)}%</td></tr>`;
+    }).join("");
+    document.getElementById("tabela").innerHTML = corpo;
+    document.querySelectorAll("#tabela tr").forEach(tr => tr.onclick = () => alterna(tr.dataset.e));
+
+    legenda();
+
+    painelVoo(base);
+
+    // O verbete da ocupacao muda com a base, entao e escrito a cada painel.
+    const borda = vis.filter(t=>t[I_BORDA]).length;
+    VERBETE.ocup = {tit: "Ocupação de solo", txt: estado.base==="rel"
+      ? `<b>Base “onde há retorno”:</b> o denominador são as células com ao menos um
+         ponto de qualquer classe. Mede se, onde o laser voltou, voltou do solo.
+         Imune à forma do talhão — e por isso é a base comparável entre talhão
+         cheio e talhão de borda (${borda.toLocaleString("pt-BR")} na seleção).`
+      : `<b>Base “bounding box”:</b> o denominador são todas as células do retângulo
+         do talhão, a mesma convenção do <code>km²</code> do censo. Penaliza talhão
+         de borda, onde o voo cruza em diagonal e boa parte do retângulo nunca teve
+         retorno (${borda.toLocaleString("pt-BR")} na seleção).`};
+  }
+
+
+  const FAIXAS = [[0,0,"0"],[1,1,"1"],[2,3,"2–3"],[4,5,"4–5"],[6,8,"6–8"],[9,99,"9+"]];
+
+  function painelVoo(base){
+    const cv = base.filter(t => t[I_PASS] >= 0);
+    const painel = document.getElementById("painel-voo");
+    if (!D.tem_passadas || cv.length < 20){ painel.hidden = true; return; }
+    painel.hidden = false;
+    const linhas = FAIXAS.map(([a,b,rot]) => {
+      const m = cv.filter(t => t[I_PASS] >= a && t[I_PASS] <= b);
+      const v = m.map(t => val(t));
+      return {rot, n: m.length, med: v.length ? mediana(v) : null};
+    }).filter(L => L.n >= 5);
+    document.getElementById("tabvoo").innerHTML = linhas.map(L =>
+      `<tr><td>${L.rot}</td><td class="n">${L.n.toLocaleString("pt-BR")}</td>`
+      + `<td class="n">${fpct(L.med)}</td>`
+      + `<td style="width:46px"><span class="barra" style="width:${L.med}%;background:${cor(L.med)}"></span></td></tr>`
+    ).join("");
+    const zero = linhas.find(L => L.rot === "0");
+    VERBETE.voo = {tit: "Ocupação × passadas de voo", txt:
+      `Passada é o rastro no solo dentro do talhão. A faixa iluminada é bem mais
+       larga que o rastro, então <b>a contagem é um piso</b>`
+      + (zero ? `; os ${zero.n} talhões com zero foram vistos só pela borda da faixa
+         dos vizinhos.` : ".")};
+  }
+
+  // A legenda nao e enfeite: cada camada mede outra coisa, numa escala com
+  // outra forma. Trocar a pintura sem trocar a regua produz um mapa que parece
+  // dizer uma coisa e diz outra.
+  function legenda(){
+    const escreve = (k, min, max, fundo) => {
+      const c = porChave(k);
+      if (!c) { return; }
+      c.querySelector(`#rampa-${k}`).style.background = fundo;
+      c.querySelector(`#legmin-${k}`).textContent = min;
+      c.querySelector(`#legmax-${k}`).textContent = max;
+    };
+    const n = estado.nivel;
+    const co = document.getElementById("legcat");
+    if (co) { co.textContent = `Ocupação em ${n}×${n} m`; }
+    escreve("ocup", "0%", "100%",
+      `linear-gradient(90deg, ${cor(0)}, ${cor(estado.patamar*0.999)}, ${cor(estado.patamar)}, ${cor(100)})`);
+    // O patamar nao e um terceiro extremo da escala: e um limiar DENTRO dela, e
+    // no DS isso e o `marker` da ColorRamp — risco de 2px com halo da cor do
+    // fundo, que e o que o mantem legivel sobre qualquer cor da rampa.
+    const marca = document.getElementById("marca-ocup");
+    const rotm = document.getElementById("legmeio-ocup");
+    if (marca && rotm) {
+      const pt = estado.patamar;
+      marca.hidden = false; marca.style.left = pt + "%";
+      rotm.hidden = false; rotm.style.left = pt + "%"; rotm.textContent = pt + "%";
+      // Dois numeros grudados nao se leem: o extremo cede a vez ao marcador.
+      document.getElementById("legmin-ocup").style.visibility = pt < 8 ? "hidden" : "";
+      document.getElementById("legmax-ocup").style.visibility = pt > 92 ? "hidden" : "";
+    }
+    escreve("ver", "1", String(VER_MAX),
+      `linear-gradient(90deg, ${corSeq(0)}, ${corSeq(0.5)}, ${corSeq(1)})`);
+    escreve("atu", ptbr(DATAS[0]), ptbr(DATAS[DATAS.length - 1]),
+      `linear-gradient(90deg, ${corSeq(0)}, ${corSeq(0.5)}, ${corSeq(1)})`);
+    faixasUI();
+  }
+
+  function alterna(e){
+    if(estado.ligadas.has(e)) estado.ligadas.delete(e); else estado.ligadas.add(e);
+    if(!estado.ligadas.size) D.entregas.forEach(x=>estado.ligadas.add(x));
+    chips(); desenhar(); painel();
+  }
+  function chips(){
+    document.getElementById("chips").innerHTML = D.entregas.map(e =>
+      `<button type="button" data-e="${e}" aria-pressed="${estado.ligadas.has(e)}">${e.replace("ENTREGA_","E")}</button>`
+    ).join("");
+    document.querySelectorAll("#chips button").forEach(b => b.onclick = () => alterna(b.dataset.e));
+  }
+
+  document.querySelectorAll(".qmapa .opc").forEach(seg => {
+    seg.querySelectorAll("button").forEach(b => b.onclick = () => {
+      seg.querySelectorAll("button").forEach(o => o.setAttribute("aria-pressed", o===b));
+      estado.base = b.dataset.v;
+      desenhar(); painel();
+    });
+  });
+
+  // --- ThemeBox: a unica caixa que sobrou escolhe o TAMANHO DA CELULA --------
+  // Procedencia e Referencias viraram camadas do LegendPanel, que e onde o DS
+  // poe camada. O que resta na sidebar e parametro da camada de ocupacao, nao
+  // camada: por isso continua numa ThemeBox e nao na legenda.
+  const caixas = [...document.querySelectorAll(".qmapa .mb-themebox")];
+  caixas.forEach(cx => {
+    cx.style.setProperty("--tbc", `color-mix(in srgb, var(${cx.dataset.cor}) 55%, transparent)`);
+    const cab = cx.querySelector(".mb-tb-head");
+    cab.onclick = () => {
+      const ab = cx.dataset.aberta !== "true";
+      cx.dataset.aberta = String(ab);
+      cab.setAttribute("aria-expanded", String(ab));
+    };
+    cx.dataset.ativa = "true";
+  });
+  document.querySelectorAll(".qmapa .mb-tb-layer").forEach(b => {
+    b.onclick = () => {
+      document.querySelectorAll(".qmapa .mb-tb-layer")
+        .forEach(o => o.setAttribute("aria-selected", String(o === b)));
+      estado.nivel = +b.dataset.v.split(":")[1];
+      if (estado.pintar !== "ocup") { ligarCamada("ocup"); }
+      desenhar(); painel();
+    };
+  });
+
+  // --- Tabs da SidebarBody ----------------------------------------------------
+  document.querySelectorAll(".qmapa .mb-tab").forEach(t => {
+    t.onclick = () => {
+      document.querySelectorAll(".qmapa .mb-tab").forEach(o => {
+        const sel = o === t;
+        o.dataset.selected = String(sel);
+        o.setAttribute("aria-selected", String(sel));
+      });
+      document.querySelectorAll(".qmapa .mb-aba")
+        .forEach(p => { p.hidden = p.dataset.aba !== t.dataset.aba; });
+    };
+  });
+
+  // --- LegendPanel: as cinco camadas num lugar so -----------------------------
+  // As tres de dado sao exclusivas entre si — o mapa pinta uma coisa de cada
+  // vez —, e as duas de referencia ligam e desligam por cima. O olho e quem
+  // manda; o chevron so recolhe a legenda daquela camada.
+  const DADO = ["ocup", "ver", "atu"];
+  const camadas = [...document.querySelectorAll(".qmapa .mb-lg-camada")];
+  const porChave = k => camadas.find(c => c.dataset.k === k);
+
+  function ligarCamada(k){
+    if (DADO.includes(k)) {
+      estado.pintar = k;
+      DADO.forEach(x => { const c = porChave(x); if (c) { visivel(c, x === k); } });
+    } else {
+      const c = porChave(k);
+      const on = c.dataset.visivel !== "true";
+      visivel(c, on);
+      if (k === "limites") { estado.limites = on; } else { estado.rotas = on; }
+    }
+    legenda(); controles(); desenhar(); painel();
+  }
+  function visivel(c, on){
+    c.dataset.visivel = String(on);
+    c.querySelector(".mb-lg-olho").setAttribute("aria-pressed", String(on));
+    const ck = c.querySelector(".mb-lg-check[data-k]");
+    if (ck) { ck.setAttribute("aria-checked", String(on)); }
+  }
+  camadas.forEach(c => {
+    const k = c.dataset.k;
+    c.querySelector(".mb-lg-olho").onclick = ev => { ev.stopPropagation(); ligarCamada(k); };
+    c.querySelector(".mb-lg-nome").onclick = () => ligarCamada(k);
+    const chev = c.querySelector(".mb-lg-chev");
+    chev.onclick = ev => {
+      ev.stopPropagation();
+      const ab = c.dataset.aberta !== "true";
+      c.dataset.aberta = String(ab);
+      chev.setAttribute("aria-expanded", String(ab));
+    };
+    c.querySelector(".mb-lg-info").dataset.k = k;
+    const ck = c.querySelector(".mb-lg-check[data-k]");
+    if (ck) { ck.onclick = ev => { ev.stopPropagation(); ligarCamada(k); }; }
+    c.querySelectorAll(".mb-lg-rot[data-k]").forEach(rot => {
+      rot.onclick = () => ligarCamada(k);
+    });
+    // Faixa de altura: filtro DENTRO da camada, como a folha de classe do DS. O
+    // olho continua sendo a camada inteira; a faixa escolhe o que ela mostra.
+    c.querySelectorAll("[data-f]").forEach(el => {
+      el.onclick = ev => {
+        ev.stopPropagation();
+        // Com a camada apagada, o clique na faixa pede para VER, nao para
+        // filtrar: desligar uma faixa de uma camada invisivel nao muda nada na
+        // tela e so deixa um estado escondido esperando para surpreender.
+        if (!estado.rotas) { return ligarCamada("rotas"); }
+        const f = +el.dataset.f;
+        if (estado.faixas.has(f)) { estado.faixas.delete(f); } else { estado.faixas.add(f); }
+        // Faixa nenhuma ligada seria uma camada acesa que nao desenha nada.
+        if (!estado.faixas.size) { FAIXAS_ALT.forEach((_, i) => estado.faixas.add(i)); }
+        faixasUI(); desenhar();
+      };
+    });
+  });
+
+  // As contagens sao do dado, nao do rotulo: faixa vazia some em vez de mentir
+  // que existe linha ali.
+  function faixasUI(){
+    const c = porChave("rotas");
+    if (!c) { return; }
+    const conta = FAIXAS_ALT.map(() => 0);
+    for (const r of (D.rotas || [])) { conta[faixaDe(r)]++; }
+    c.querySelectorAll(".mb-lg-classe").forEach(linha => {
+      const f = +linha.querySelector("[data-f]").dataset.f;
+      linha.hidden = conta[f] === 0;
+      linha.querySelector(`[data-conta="${f}"]`).textContent = conta[f].toLocaleString("pt-BR");
+      linha.querySelector(".mb-lg-check").setAttribute("aria-checked", String(estado.faixas.has(f)));
+    });
+  }
+  faixasUI();
+  if (!temVer) {
+    // Payload antigo, sem as colunas de proveniencia: as duas camadas somem.
+    ["ver", "atu"].forEach(k => { const c = porChave(k); if (c) { c.remove(); } });
+  }
+  if (!(D.rotas || []).length) {
+    const c = porChave("rotas");
+    if (c) { c.remove(); }
+  }
+
+  // Base e patamar sao parametros da ocupacao: nas outras camadas as duas
+  // ferramentas somem do chrome do mapa. Ferramenta que nao muda nada do que
+  // esta pintado le como mapa quebrado.
+  // Base, patamar e a caixa de celula so valem para a ocupacao. Em vez de
+  // esconder a ferramenta inteira — ela agora e uma so, e carrega o filtro de
+  // entregas, que vale sempre — os dois campos e que recolhem.
+  function controles(){
+    const so = estado.pintar === "ocup";
+    document.querySelectorAll(".qmapa .mb-form-campo").forEach((c, i) => {
+      if (i < 2) { c.hidden = !so; }
+    });
+    const cx = document.getElementById("tb-ocupacao");
+    if (cx) { cx.dataset.ativa = String(so); }
+  }
+
+  // Chrome sobre mapa que abre: so um painel por vez, e clicar fora fecha.
+  function fechaPops(raiz){
+    document.querySelectorAll(".qmapa .mb-ind-pop").forEach(p => {
+      if (p === raiz) { return; }
+      p.hidden = true;
+      p.parentElement.querySelector("button").setAttribute("aria-expanded", "false");
+    });
+  }
+  document.querySelectorAll(".qmapa .mb-ind-bt").forEach(bt => {
+    bt.onclick = ev => {
+      ev.stopPropagation();
+      const pop = bt.parentElement.querySelector(".mb-ind-pop");
+      const abrir = pop.hidden;
+      fechaPops(abrir ? pop : null);
+      pop.hidden = !abrir;
+      bt.setAttribute("aria-expanded", String(abrir));
+    };
+  });
+  document.querySelectorAll(".qmapa .mb-ind-pop")
+    .forEach(p => p.addEventListener("click", ev => ev.stopPropagation()));
+  document.querySelector(".qmapa .mb-shell-map").addEventListener("click", () => fechaPops());
+
+  // MapHint: a faixa cresce para o lado livre e o botao fica onde estava.
+  const btDica = document.getElementById("q-dica"), txDica = document.getElementById("q-dica-txt");
+  btDica.onclick = ev => {
+    ev.stopPropagation();
+    const abrir = txDica.hidden;
+    txDica.hidden = !abrir;
+    btDica.setAttribute("aria-expanded", String(abrir));
+  };
+
+  // MapControls: norte e zoom. O duplo clique no canvas ja volta a vista.
+  document.getElementById("q-norte").onclick = ev => { ev.stopPropagation(); reset(); };
+  document.getElementById("q-mais").onclick  = ev => { ev.stopPropagation(); zoom(1.35); };
+  document.getElementById("q-menos").onclick = ev => { ev.stopPropagation(); zoom(1/1.35); };
+
+  // LegendPanel: a camada e a unidade que recolhe.
+  const lg = document.getElementById("q-legenda");
+  document.getElementById("q-legenda-recolher").onclick = ev => {
+    ev.stopPropagation();
+    const rec = lg.dataset.recolhida !== "true";
+    lg.dataset.recolhida = String(rec);
+    ev.currentTarget.setAttribute("aria-expanded", String(!rec));
+  };
+  controles();
+  const slider = document.getElementById("patamar");
+  slider.oninput = () => {
+    estado.patamar = +slider.value;
+    document.getElementById("patamarv").textContent = estado.patamar + "%";
+    desenhar(); painel();
+  };
+
+  // A ContextBar diz QUAL RECORTE o leitor esta vendo, e nada mais. A data da
+  // medicao, as contagens e o metodo vivem na aba Medicao e no botao de
+  // informacao — metadado tem lugar proprio, nao fica pendurado num chrome.
+
+  Object.assign(VERBETE, {
+    tema: {tit: "Ocupação de solo", txt:
+      `Divide cada talhão de 1 km² em células de 1, 2, 3 ou 4 m e conta em quantas
+       existe ao menos um ponto de solo. O produto contratado pede
+       <b>3,5 pontos/m² em solo</b> na média, e a média passa — o que a ocupação
+       mede é a <b>distribuição</b>, que a média esconde. O patamar adotado é
+       <b>70% em 2×2 m</b>.<br><br>
+       ${T.length.toLocaleString("pt-BR")} talhões em ${D.entregas.length} entregas,
+       com a contagem de pontos por classe lida de cada nuvem LAZ${
+         D.falhas.length ? `. ${D.falhas.length} talhões ficaram sem medição` : ""}.`},
+    ocup: {tit: "Ocupação de solo", txt:
+      `A cor é divergente e ancorada no patamar: neutro no limiar, forte para os
+       dois lados. A <b>base</b> do denominador muda o que a conta mede, e troca
+       no botão de filtros e configurações.`},
+    ver: {tit: "Versões do arquivo", txt:
+      `Quantas vezes a nuvem daquele talhão já existiu no bucket.
+       <b>É um piso, não uma contagem.</b> O versionamento de objeto está desligado
+       no armazenamento, então o número sai de comparar os
+       ${(D.versoes_censos||[]).length} censos de densidade datados deste acervo
+       (${ptbr((D.versoes_censos||[])[0])} a ${ptbr((D.versoes_censos||[]).slice(-1)[0])}).<br><br>
+       Reescrita que preservou tamanho e contagem de pontos não aparece aqui — a
+       ENTREGA_04 teve um caso —, duas reescritas entre dois censos contam uma, e
+       antes do primeiro censo não há memória.`},
+    atu: {tit: "Última escrita no bucket", txt:
+      `A data em que o arquivo daquele talhão foi gravado pela última vez, lida do
+       próprio objeto — <b>esta é exata</b>. Quanto mais escuro, mais recente.
+       Serve para separar o que chegou na entrega original do que foi reposto
+       depois.`},
+    limites: {tit: "Limites das entregas", txt:
+      `O contorno sai da célula nominal da grade, não do <i>bounding box</i> de cada
+       talhão: talhão de borda tem bbox menor que a célula, e usar o bbox deixaria
+       o contorno esburacado onde um talhão pequeno faz fronteira com um cheio.`},
+    rotas: {tit: "Rotas de voo", txt:
+      `A trajetória entregue pelo fornecedor, simplificada a 50 m${
+        D.rotas_km ? `: ${Math.round(D.rotas_km).toLocaleString("pt-BR")} km em
+        ${(D.rotas||[]).length} linhas` : ""}.
+       <br><br><b>A altura é elipsoidal, não acima do terreno.</b> A trajetória
+       traz altura sobre o elipsoide; altura de voo real exigiria subtrair o
+       terreno, que não está no arquivo. Para separar patamares de voo entre si
+       isso basta — a diferença é um deslocamento comum —, mas o número não é
+       AGL e não deve ser lido como tal.
+       <br><br>A altura de cada linha é a <b>mediana</b> das suas épocas, não a
+       média: o começo e o fim de cada arquivo pegam subida e descida, e a média
+       os deixaria puxar o número que deveria descrever o patamar.
+       <br><br>As 25 linhas abaixo de 600 m não são linha de levantamento: têm
+       dispersão de centenas de metros entre o décimo e o nonagésimo percentil,
+       isto é, são subida, descida ou táxi.`},
+  });
+
+  document.getElementById("q-dica-txt").textContent =
+    "Roda para aproximar, arraste para mover, duplo clique volta. "
+    + "Clique numa entrega da tabela para ligá-la ou desligá-la.";
+
+  // --- modal da informacao ----------------------------------------------------
+  // Uma superficie so para toda anotacao longa: cada botao diz qual verbete
+  // abrir, e o texto mora num lugar unico em vez de espalhado em paragrafos
+  // escondidos pelo documento.
+  const modal = document.getElementById("q-modal");
+  const modalTit = document.getElementById("q-modal-tit");
+  const modalTxt = document.getElementById("q-modal-txt");
+  function abrirModal(k){
+    const v = VERBETE[k];
+    if (!v) { return; }
+    modalTit.textContent = v.tit;
+    modalTxt.innerHTML = v.txt;
+    modal.hidden = false;
+  }
+  const fecharModal = () => { modal.hidden = true; };
+  document.getElementById("q-modal-x").onclick = fecharModal;
+  modal.onclick = ev => { if (ev.target === modal) { fecharModal(); } };
+  document.addEventListener("keydown", ev => {
+    if (ev.key === "Escape" && !modal.hidden) { fecharModal(); }
+  });
+  document.querySelectorAll(".qmapa .mb-info").forEach(bt => {
+    bt.onclick = ev => { ev.stopPropagation(); abrirModal(bt.dataset.k); };
+  });
+
+  // A procedencia da medicao e MetaStrip no pe do card de Selecao, nao card
+  // proprio: ela nao e um segundo assunto, e a qualificacao do primeiro — de
+  // quando e de que escopo saem os numeros que estao logo acima dela.
+  // `talhoes` nao entra: ja e a primeira metrica do card, e repetir um numero a
+  // dois centimetros de si mesmo e convidar o leitor a procurar a diferenca.
+  const strip = document.getElementById("m-strip");
+  if (strip) {
+    const itens = [
+      "Medição de " + (D.medido_em || D.gerado_em).split("-").reverse().join("/"),
+      D.entregas.length + " entregas",
+    ];
+    if (D.rotas_km) {
+      itens.push(Math.round(D.rotas_km).toLocaleString("pt-BR") + " km de trajetória");
+    }
+    // Ausencia de medicao so vira linha quando existe: "nenhum" ocuparia a tira
+    // para dizer que nao ha nada a dizer.
+    if (D.falhas.length) { itens.push(D.falhas.length + " talhões sem medição"); }
+    strip.innerHTML = itens.map(x => `<span>${x}</span>`).join("");
+  }
+  // O botao da TopBar e o da dica abrem a mesma faixa: um texto, um lugar.
+
+  // --- TerritorySearch -------------------------------------------------------
+  // A plataforma pesquisa TERRITORIO, nao camada: o resultado e um recorte, e e
+  // ele que a ContextBar passa a anunciar. Aqui o territorio tem dois niveis — a
+  // entrega e o talhao de 1 km² — e cada um responde a uma pergunta diferente:
+  // a entrega e um lote de trabalho, o talhao e uma unidade de medicao.
+  (function(){
+    const campo = document.getElementById("q-busca");
+    const limpar = document.getElementById("q-busca-x");
+    const pop = document.getElementById("q-busca-pop");
+    const faixa = document.getElementById("q-ctx");
+    if (!campo || !pop || !faixa) { return; }
+    const RECORTE = faixa.textContent;
+    const ICO_E = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"'
+      + ' fill-opacity=".35" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"'
+      + ' stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 20.6 9.6 17.3 20 6.7 20 3.4 9.6Z"/></svg>';
+    const ICO_T = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"'
+      + ' stroke="currentColor" stroke-width="2.6" stroke-linecap="round"'
+      + ' stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>';
+    const curto = e => e.replace("ENTREGA_", "E");
+
+    // O usuario digita "E04", "entrega 4", "4" ou "NP_1380218". O prefixo NP_ e
+    // ruido para a comparacao: ele e nome de arquivo, nao identificador digitado.
+    function achar(q){
+      const n = q.trim().toLowerCase().replace(/^np[_\- ]?/, "");
+      if (!n) { return []; }
+      const out = [];
+      for (const e of D.entregas) {
+        const alvos = [e.toLowerCase(), curto(e).toLowerCase(),
+                       curto(e).replace(/^E0?/i, "").toLowerCase()];
+        if (alvos.some(a => a.startsWith(n)) || e.toLowerCase().includes(n)) {
+          out.push({tipo: "e", e: e});
+        }
+      }
+      if (/^\d+$/.test(n)) {
+        for (const t of T) {
+          if (String(t[I_ID]).startsWith(n)) { out.push({tipo: "t", t: t}); }
+          if (out.length >= 12) { break; }
+        }
+      }
+      return out.slice(0, 12);
+    }
+
+    function fechar(){ pop.hidden = true; pop.innerHTML = ""; }
+
+    // Enquadrar e por o recorte na tela com folga, nao encostar nas bordas: o
+    // talhao vizinho e contexto, e sem ele o leitor nao sabe onde caiu.
+    function enquadrar(lo, hi, la, lb){
+      vista.cx = (lo + hi) / 2;
+      vista.cy = (la + lb) / 2;
+      const lonkm = Math.max(hi - lo, 0.01), latkm = Math.max(lb - la, 0.01);
+      const alvo = Math.min(1 / lonkm, 1 / latkm) * 0.5;
+      vista.zoom = Math.min(400, Math.max(1, alvo));
+      desenhar(); controles();
+    }
+
+    function irEntrega(e){
+      estado.ligadas = new Set([e]);
+      const meus = T.filter(t => D.entregas[t[I_ENT]] === e);
+      if (meus.length) {
+        enquadrar(Math.min(...meus.map(t => t[I_LON])), Math.max(...meus.map(t => t[I_LON])),
+                  Math.min(...meus.map(t => t[I_LAT])), Math.max(...meus.map(t => t[I_LAT])));
+      }
+      faixa.textContent = "Entrega " + curto(e);
+      chips(); desenhar(); painel();
+    }
+
+    function irTalhao(t){
+      const e = D.entregas[t[I_ENT]];
+      // Talhao de entrega desligada nao apareceria: ligar e parte de ir ate ele.
+      if (!estado.ligadas.has(e)) { estado.ligadas.add(e); chips(); }
+      const dl = t[I_DLON] || 0.005, dt = t[I_DLAT] || 0.005;
+      enquadrar(t[I_LON] - dl * 6, t[I_LON] + dl * 6,
+                t[I_LAT] - dt * 6, t[I_LAT] + dt * 6);
+      faixa.textContent = "Talhão NP_" + t[I_ID] + " · " + curto(e);
+      desenhar(); painel();
+    }
+
+    function desenhaPop(itens, q){
+      if (!q.trim()) { return fechar(); }
+      if (!itens.length) {
+        pop.innerHTML = '<p class="mb-busca-vazio">Nenhuma entrega ou talhão com isso.</p>';
+        pop.hidden = false;
+        return;
+      }
+      pop.innerHTML = itens.map((it, i) => it.tipo === "e"
+        ? `<button type="button" role="option" data-i="${i}">${ICO_E}`
+          + `<b>Entrega ${curto(it.e)}</b>`
+          + `<i>${T.filter(t => D.entregas[t[I_ENT]] === it.e).length.toLocaleString("pt-BR")} talhões</i></button>`
+        : `<button type="button" role="option" data-i="${i}">${ICO_T}`
+          + `<b>NP_${it.t[I_ID]}</b><i>${curto(D.entregas[it.t[I_ENT]])}</i></button>`
+      ).join("");
+      pop.hidden = false;
+      pop.querySelectorAll("button").forEach(b => b.onclick = () => {
+        const it = itens[+b.dataset.i];
+        if (it.tipo === "e") { irEntrega(it.e); } else { irTalhao(it.t); }
+        campo.value = it.tipo === "e" ? "Entrega " + curto(it.e) : "NP_" + it.t[I_ID];
+        limpar.hidden = false;
+        fechar();
+      });
+    }
+
+    campo.oninput = () => {
+      limpar.hidden = !campo.value;
+      desenhaPop(achar(campo.value), campo.value);
+    };
+    campo.onfocus = () => { if (campo.value) { desenhaPop(achar(campo.value), campo.value); } };
+    campo.onkeydown = ev => {
+      if (ev.key === "Escape") { fechar(); }
+      if (ev.key === "Enter") {
+        const bt = pop.querySelector("button");
+        if (bt) { ev.preventDefault(); bt.click(); }
+      }
+    };
+    limpar.onclick = () => {
+      campo.value = ""; limpar.hidden = true; fechar();
+      estado.ligadas = new Set(D.entregas);
+      faixa.textContent = RECORTE;
+      reset(); chips(); desenhar(); painel();
+    };
+    document.addEventListener("click", ev => {
+      if (!ev.target.closest(".mb-busca")) { fechar(); }
+    });
+  })();
+
+  chips(); dimensionar(); painel();
+
+    // O shell mede a propria largura e recolhe nesta ordem: primeiro a sidebar
+    // vira trilha de 56px, depois sai o painel de estatistica. O mapa nunca
+    // cede — tem piso de 340px. E a regra do `autoCompact` do PlatformShell:
+    // o painel e a tarefa que o usuario abriu; a navegacao cabe num icone.
+    const shell = document.getElementById("q-shell");
+    const trilha = shell.querySelector(".mb-rail");
+    const PISO = 340, SIDEBAR = 340, PAINEL = 401, TRILHA = 56;
+    let decisao = null;      // null = segue o automatico; true/false = o usuario mandou
+    let aperto = 0;
+
+    function aplicar(){
+      const fechada = decisao != null ? decisao : aperto > 0;
+      shell.dataset.recolhida = String(fechada);
+      shell.dataset.painel = aperto > 1 ? "fora" : "dentro";
+      trilha.hidden = !fechada;
+      const b = document.getElementById("q-recolher");
+      if (b) { b.setAttribute("aria-expanded", String(!fechada)); }
+      dimensionar();
+    }
+    function medir(largura){
+      if (!largura) { return; }
+      const v = largura >= SIDEBAR + PAINEL + PISO ? 0
+              : largura >= TRILHA + PAINEL + PISO ? 1 : 2;
+      if (v === aperto) { return; }
+      aperto = v;
+      decisao = null;        // o degrau mudou: a escolha de uma largura nao prende a outra
+      aplicar();
+    }
+    document.getElementById("q-recolher").onclick = () => { decisao = true;  aplicar(); };
+    document.getElementById("q-expandir").onclick = () => { decisao = false; aplicar(); };
+
+    // A primeira medida vai a mao: o observador so dispara DEPOIS, e ate la o
+    // shell ficaria com a sidebar inteira numa largura que nao a comporta.
+    medir(shell.getBoundingClientRect().width);
+    if (typeof ResizeObserver !== "undefined") {
+      // Guardados em variaveis de proposito: observador sem referencia viva e
+      // candidato a coleta, e o sintoma seria um shell que para de responder
+      // horas depois, sem erro nenhum.
+      estado.obsShell = new ResizeObserver(es => medir(es[0].contentRect.width));
+      estado.obsShell.observe(shell);
+      // O canvas tem altura de flex, nao de viewport: so o observador do proprio
+      // quadro sabe quando ele mudou de tamanho.
+      estado.obsMapa = new ResizeObserver(() => dimensionar());
+      estado.obsMapa.observe(shell.querySelector(".mb-shell-map"));
+    }
+    window.addEventListener("resize", dimensionar);
+    // o tema do relatorio e quem manda; canvas nao segue variavel CSS, entao
+    // repintar e explicito
+    window.qmapaRepintar = () => { desenhar(); painel(); };
+  }
+
+  function carregar() {
+    if (pedido) { return; }
+    pedido = true;
+    parar();
+    botao.hidden = true;
+    texto.textContent = "Carregando o mapa (" + META.peso + ")\u2026";
+    fetch(META.arquivo)
+      .then(function (r) {
+        if (!r.ok) { throw new Error("HTTP " + r.status); }
+        return r.json();
+      })
+      .then(function (d) {
+        aviso.hidden = true;
+        caixa.hidden = false;
+        montar(d);
+      })
+      .catch(function (e) {
+        // Degradacao honesta: as tabelas acima sao geradas no HTML e nao dependem
+        // do mapa. O leitor fica sem o instrumento, nao sem os numeros.
+        botao.hidden = false;
+        pedido = false;
+        texto.textContent = "O mapa nao carregou (" + e.message
+          + "). As tabelas acima trazem os mesmos numeros.";
+      });
+  }
+
+  // Dispara quando a secao se aproxima. Mesmo mecanismo do trilho desta pagina —
+  // getBoundingClientRect no scroll, com throttle por requestAnimationFrame —, e
+  // nao IntersectionObserver: medido em 10/10/2026, o observador nao dispara em
+  // aba que o navegador nao esta renderizando de fato, e isso e indistinguivel
+  // de um mapa quebrado.
+  function perto() {
+    var r = secao.getBoundingClientRect();
+    return r.top < window.innerHeight + 600 && r.bottom > -600;
+  }
+
+  function verificar() { if (perto()) { carregar(); } }
+
+  // O throttle por requestAnimationFrame existe para o scroll, que dispara em
+  // rajada. Medido em 10/10/2026: numa aba que o navegador nao esta pintando o
+  // rAF nunca roda, e um verificar() agendado assim fica preso para sempre.
+  function aoRolar() {
+    if (agendado) { return; }
+    agendado = true;
+    requestAnimationFrame(function () {
+      agendado = false;
+      verificar();
+    });
+  }
+
+  function parar() {
+    window.removeEventListener("scroll", aoRolar);
+    window.removeEventListener("resize", aoRolar);
+    window.removeEventListener("load", verificar);
+    window.removeEventListener("hashchange", verificar);
+  }
+
+  botao.addEventListener("click", carregar);
+  window.addEventListener("scroll", aoRolar, { passive: true });
+  window.addEventListener("resize", aoRolar);
+  // Abrir o documento direto em #quadricula rola para a ancora DEPOIS de este
+  // script rodar, e esse salto nao chega aos ouvintes recem-registrados: sem o
+  // load, a secao abre visivel e o mapa fica esperando um scroll que nao vem.
+  // Estes dois disparam uma vez so, entao chamam verificar() direto, sem rAF.
+  window.addEventListener("load", verificar);
+  window.addEventListener("hashchange", verificar);
+  verificar();
+})();
+</script>
+
+</body>
+</html>
