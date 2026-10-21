@@ -1516,6 +1516,34 @@
     flex-direction:row-reverse; font:var(--body-note-strong);
     color:var(--color-neutral-900); font-variant-numeric:tabular-nums; height:36px;
   }
+  /* Menu do DS, densidade compacta: opcao de 35px, selecao por peso + check,
+     nunca por fundo. Como o resto do chrome sobre o mapa, o painel abre a
+     esquerda; e cresce para CIMA, porque abaixo do botao ha so dois indicadores
+     antes da borda do mapa. */
+  .qmapa .mb-ind-menu{
+    top:auto; bottom:0; height:auto; padding:0; border:0; background:none;
+    flex-direction:column; align-items:stretch; white-space:nowrap;
+  }
+  .qmapa .mb-menu{
+    width:184px; box-sizing:border-box; padding:4px; display:flex; flex-direction:column;
+    background:var(--color-neutral-100); border:1px solid var(--color-neutral-300);
+    border-radius:var(--border-radius-large); box-shadow:var(--shadow-small);
+  }
+  .qmapa .mb-menu-heading{
+    display:block; padding:8px 8px 4px; font:var(--body-note-strong);
+    text-transform:uppercase; letter-spacing:.6px; color:var(--color-neutral-600);
+  }
+  .qmapa .mb-menu-option{
+    display:flex; align-items:center; gap:8px; width:100%; min-height:35px;
+    padding:7px 8px; box-sizing:border-box; border:0; background:transparent;
+    border-radius:var(--border-radius-medium); cursor:pointer; text-align:left;
+    font:var(--body-small); color:var(--color-neutral-1000);
+    transition:background-color var(--transition-default);
+  }
+  .qmapa .mb-menu-option:hover{background:var(--color-neutral-200);}
+  .qmapa .mb-menu-option[data-selected="true"]{font:var(--body-small-strong);}
+  .qmapa .mb-menu-check{margin-left:auto; color:var(--color-primary-700); display:none;}
+  .qmapa .mb-menu-option[data-selected="true"] .mb-menu-check{display:block;}
   .qmapa .mb-ind-barra{
     display:block; height:6px; border:1.5px solid var(--color-neutral-800); border-top:0;
   }
@@ -1965,14 +1993,6 @@
                     <b>Entregas</b>
                     <span class="chips" id="chips"></span>
                   </span>
-                  <span class="mb-form-campo">
-                    <b>Mapa de fundo</b>
-                    <span class="mb-rp-seg mb-rp-seg-largo" id="fundo">
-                      <button type="button" data-v="" aria-pressed="true">Nenhum</button>
-                      <button type="button" data-v="ruas" aria-pressed="false">Ruas</button>
-                      <button type="button" data-v="satelite" aria-pressed="false">Satélite</button>
-                    </span>
-                  </span>
                 </span>
               </span>
             </div>
@@ -1986,6 +2006,13 @@
                   <button type="button" id="q-mais" title="Aproximar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
                   <button type="button" id="q-menos" title="Afastar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
                 </div>
+                <span class="mb-ind" id="ind-fundo">
+                  <button type="button" class="mb-ind-bt" aria-expanded="false" aria-haspopup="menu"
+                          title="Mapa de fundo"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></svg></button>
+                  <span class="mb-ind-pop mb-ind-menu" hidden>
+                    <span class="mb-menu" role="menu" data-density="compact"><span class="mb-menu-heading">Mapa de fundo</span><button type="button" class="mb-menu-option" role="menuitemradio" data-v="" data-selected="true" aria-checked="true"><span class="mb-menu-strong">Nenhum</span><svg class="mb-menu-check" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></button><button type="button" class="mb-menu-option" role="menuitemradio" data-v="ruas" data-selected="false" aria-checked="false"><span class="mb-menu-strong">Ruas</span><svg class="mb-menu-check" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></button><button type="button" class="mb-menu-option" role="menuitemradio" data-v="satelite" data-selected="false" aria-checked="false"><span class="mb-menu-strong">Satélite</span><svg class="mb-menu-check" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></button></span>
+                  </span>
+                </span>
                 <span class="mb-ind" id="ind-centro">
                   <button type="button" class="mb-ind-bt" aria-expanded="false"
                           title="Centro do mapa"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="2" x2="5" y1="12" y2="12"/><line x1="19" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="5"/><line x1="12" x2="12" y1="19" y2="22"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg></button>
@@ -2418,10 +2445,16 @@
       ? 'Mapa de fundo bloqueado nesta página — veja no <a href="https://joaosiqueira.github.io/amazonia3d-auditoria/quadriculas.html" target="_blank" rel="noopener">site</a>'
       : f.credito;
   }
-  document.querySelectorAll("#fundo button").forEach(b => b.onclick = () => {
-    document.querySelectorAll("#fundo button").forEach(o => o.setAttribute("aria-pressed", o === b));
+  // Botao do MapControls, abaixo do zoom: escolher o fundo fecha o menu, como
+  // todo Menu do DS — a escolha e uma so, e o menu aberto esconderia o mapa.
+  document.querySelectorAll("#ind-fundo .mb-menu-option").forEach(b => b.onclick = ev => {
+    ev.stopPropagation();
+    document.querySelectorAll("#ind-fundo .mb-menu-option").forEach(o => {
+      o.dataset.selected = String(o === b); o.setAttribute("aria-checked", String(o === b));
+    });
     estado.fundo = b.dataset.v;
     fundoConta.ok = fundoConta.erro = 0;
+    fechaPops();
     credito(); desenhar();
   });
 
