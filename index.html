@@ -539,6 +539,7 @@
     --rota:rgba(32,118,58,.85);
     --rota-1:rgba(189,240,205,.9); --rota-2:rgba(63,198,104,.88);
     --rota-3:rgba(32,118,58,.88);  --rota-4:rgba(16,70,33,.9);
+    --area:rgba(67,121,138,.95);
   }
   :root[data-theme="dark"]{
     --logo-word:#7FB6C4; --logo-gray:#9BA0A2;
@@ -546,6 +547,7 @@
     --rota:rgba(63,198,104,.85);
     --rota-1:rgba(16,70,33,.95);   --rota-2:rgba(32,118,58,.9);
     --rota-3:rgba(63,198,104,.88); --rota-4:rgba(189,240,205,.9);
+    --area:rgba(148,213,233,.92);
   }
 
   body{background:var(--ground); color:var(--ink); font:var(--t-md); }
@@ -2826,6 +2828,22 @@
                     </div>
                     <div class="mb-lg-corpo"><div class="mb-lg-classe"><button type="button" class="mb-lg-check" role="checkbox" aria-checked="true" data-k="limites" aria-label="Contorno da entrega" style="--cor-classe:var(--contorno)"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="var(--color-neutral-100)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l5 5L20 6"/></svg></button><span class="mb-lg-rot" data-k="limites">Contorno da entrega</span></div></div>
                   </div>
+                  <div class="mb-lg-camada" data-k="area" data-aberta="true"
+                       data-visivel="true">
+                    <div class="mb-lg-linha">
+                      <span class="mb-lg-ic"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z" stroke-width="2.6" stroke-dasharray="4 3"/></svg></span>
+                      <span class="mb-lg-nome">Área MapBiomas</span>
+                      <span class="mb-lg-acoes">
+                        <button type="button" class="mb-lg-olho" aria-pressed="true"
+                                aria-label="Ocultar Área MapBiomas"><svg class="mb-ic-on" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="mb-ic-off" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg></button>
+                        <button type="button" class="mb-lg-info mb-info" data-k="area"
+                                aria-label="Sobre Área MapBiomas"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></button>
+                      </span>
+                      <button type="button" class="mb-lg-chev" aria-expanded="true"
+                              aria-label="Recolher Área MapBiomas"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                    </div>
+                    <div class="mb-lg-corpo"><div class="mb-lg-classe"><button type="button" class="mb-lg-check" role="checkbox" aria-checked="true" data-k="area" aria-label="Bloco planejado" style="--cor-classe:var(--area)"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="var(--color-neutral-100)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l5 5L20 6"/></svg></button><span class="mb-lg-rot" data-k="area">Bloco planejado</span></div></div>
+                  </div>
                   <div class="mb-lg-camada" data-k="rotas" data-aberta="true"
                        data-visivel="false">
                     <div class="mb-lg-linha">
@@ -3068,7 +3086,7 @@
 
   const T = D.talhoes;
   const estado = {pintar:"ocup", base:"rel", nivel:2, patamar:D.patamar||70,
-                  ligadas:new Set(D.entregas), limites:true, rotas:false,
+                  ligadas:new Set(D.entregas), limites:true, rotas:false, area:!!D.area,
                   faixas:new Set([0, 1, 2, 3])};
 
   // --- as duas camadas de proveniencia: quantas versoes e quando foi a ultima
@@ -3135,6 +3153,20 @@
   const ext = {lo:Math.min(...lons), hi:Math.max(...lons), la:Math.min(...lats), lb:Math.max(...lats)};
   const kx = Math.cos((ext.la+ext.lb)/2 * Math.PI/180);
   const vista = {zoom:1, cx:(ext.lo+ext.hi)/2, cy:(ext.la+ext.lb)/2, base:1};
+  // A area planejada vai muito alem do acervo (63,8 mil km2 contra ~9,7 mil de
+  // talhoes), entao o zoom minimo deixa de ser o enquadramento do acervo: tem de
+  // caber a area inteira, senao a camada nunca e vista por completo.
+  const extArea = (() => {
+    const b = (D.area && D.area.blocos) || [];
+    if (!b.length) { return null; }
+    const e = {lo:Infinity, hi:-Infinity, la:Infinity, lb:-Infinity};
+    for (const x of b) for (const p of x.p) for (let i = 0; i < p.length; i += 2) {
+      e.lo = Math.min(e.lo, p[i]); e.hi = Math.max(e.hi, p[i]);
+      e.la = Math.min(e.la, p[i + 1]); e.lb = Math.max(e.lb, p[i + 1]);
+    }
+    return e;
+  })();
+  let zMin = 1;
 
   const FONTE = '"Open Sans", system-ui, -apple-system, sans-serif';
   const col = t => +t[I_ID] % 1000, lin = t => Math.floor(+t[I_ID] / 1000);
@@ -3199,6 +3231,10 @@
     ctx.setTransform(dpr,0,0,dpr,0,0);
     const sx = W / ((ext.hi-ext.lo)*kx || 1), sy = H / ((ext.lb-ext.la) || 1);
     vista.base = Math.min(sx, sy) * 0.94;
+    if (extArea) {
+      const fa = Math.min(W / ((extArea.hi - extArea.lo) * kx), H / (extArea.lb - extArea.la)) * 0.94;
+      zMin = Math.min(1, fa / vista.base);
+    }
     desenhar();
   }
   const px = t => [W/2 + (t - vista.cx)*kx*vista.base*vista.zoom, 0];
@@ -3241,6 +3277,7 @@
       ctx.fillStyle = corDe(t);
       ctx.fillRect(x, y, w, h);
     }
+    if (estado.area) desenharArea();
     if (estado.rotas) desenharRotas();
     if (estado.limites) contornos();
     // escala: quantos pixels vale 1 km, que e o lado de um talhao
@@ -3302,6 +3339,39 @@
         }
       }
       ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function desenharArea(){
+    // Tracejada, para nao ser lida como limite de entrega: o bloco e o que foi
+    // PLANEJADO, o contorno cheio e o que chegou. Abaixo das rotas e dos limites
+    // porque e a moldura mais larga das tres.
+    ctx.save();
+    ctx.strokeStyle = css("--area"); ctx.lineWidth = 1.6;
+    ctx.setLineDash([6, 4]); ctx.lineJoin = "round";
+    ctx.beginPath();
+    for (const b of D.area.blocos) for (const p of b.p) {
+      for (let i = 0; i < p.length; i += 2) {
+        const [x, y] = pxy(p[i], p[i + 1]);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // rotulo na media dos vertices: os blocos sao quadrilateros quase convexos,
+    // e a media cai dentro deles sem precisar de polo de inacessibilidade
+    ctx.font = "700 11px " + FONTE;
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    for (const b of D.area.blocos) {
+      const p = b.p[0]; let sx = 0, sy = 0;
+      for (let i = 0; i < p.length; i += 2) { sx += p[i]; sy += p[i + 1]; }
+      const [x, y] = pxy(sx / (p.length / 2), sy / (p.length / 2));
+      if (x < 8 || x > W - 8 || y < 8 || y > H - 8) continue;
+      const txt = "B" + b.b;
+      ctx.lineWidth = 3.5; ctx.strokeStyle = css("--mapa"); ctx.strokeText(txt, x, y);
+      ctx.fillStyle = css("--area"); ctx.fillText(txt, x, y);
     }
     ctx.restore();
   }
@@ -3396,7 +3466,7 @@
   cv.addEventListener("wheel", e => {
     e.preventDefault();
     const [lon0,lat0] = inv(e.offsetX, e.offsetY);
-    vista.zoom = Math.min(400, Math.max(1, vista.zoom * (e.deltaY<0 ? 1.18 : 1/1.18)));
+    vista.zoom = Math.min(400, Math.max(zMin, vista.zoom * (e.deltaY<0 ? 1.18 : 1/1.18)));
     const [lon1,lat1] = inv(e.offsetX, e.offsetY);
     vista.cx += lon0-lon1; vista.cy += lat0-lat1;
     desenhar(); mostrarDica(null);
@@ -3407,7 +3477,7 @@
     desenhar(); mostrarDica(null);
   }
   function zoom(f){
-    vista.zoom = Math.min(400, Math.max(1, vista.zoom * f));
+    vista.zoom = Math.min(400, Math.max(zMin, vista.zoom * f));
     desenhar(); mostrarDica(null);
   }
   cv.addEventListener("dblclick", reset);
@@ -3596,9 +3666,9 @@
     };
   });
 
-  // --- LegendPanel: as cinco camadas num lugar so -----------------------------
+  // --- LegendPanel: as seis camadas num lugar so ------------------------------
   // As tres de dado sao exclusivas entre si — o mapa pinta uma coisa de cada
-  // vez —, e as duas de referencia ligam e desligam por cima. O olho e quem
+  // vez —, e as tres de referencia ligam e desligam por cima. O olho e quem
   // manda; o chevron so recolhe a legenda daquela camada.
   const DADO = ["ocup", "ver", "atu"];
   const camadas = [...document.querySelectorAll(".qmapa .mb-lg-camada")];
@@ -3612,7 +3682,7 @@
       const c = porChave(k);
       const on = c.dataset.visivel !== "true";
       visivel(c, on);
-      if (k === "limites") { estado.limites = on; } else { estado.rotas = on; }
+      estado[k] = on;
     }
     legenda(); controles(); desenhar(); painel();
   }
@@ -3678,6 +3748,10 @@
   }
   if (!(D.rotas || []).length) {
     const c = porChave("rotas");
+    if (c) { c.remove(); }
+  }
+  if (!D.area) {
+    const c = porChave("area");
     if (c) { c.remove(); }
   }
 
@@ -3784,6 +3858,20 @@
       `O contorno sai da célula nominal da grade, não do <i>bounding box</i> de cada
        talhão: talhão de borda tem bbox menor que a célula, e usar o bbox deixaria
        o contorno esburacado onde um talhão pequeno faz fronteira com um cheio.`},
+    area: {tit: "Área MapBiomas", txt: D.area ?
+      `Os ${D.area.blocos.length} blocos de voo planejados, em ${D.area.lotes} lotes:
+       ${Math.round(D.area.km2).toLocaleString("pt-BR")} km², da camada
+       <code>AREA_MAPBIOMAS</code> do pacote vetorial do projeto. A linha tracejada
+       é o que foi planejado; o contorno cheio, o que chegou com nuvem de pontos.
+       Bloco sem contorno de entrega por dentro ainda não tem talhão medido.
+       <br><br>O mesmo pacote traz o mosaico de
+       ${D.area.mosaico.toLocaleString("pt-BR")} quadrículas de 1 km², que não vai
+       ao mapa${D.area.talhoes ? `; os ${D.area.talhoes.toLocaleString("pt-BR")}
+       talhões do acervo têm ${D.area.talhoes_fora ? "" : "todos "}número de
+       quadrícula nele${D.area.talhoes_fora ? `, menos ${D.area.talhoes_fora}` : ""}
+       (${(100 * (D.area.talhoes - D.area.talhoes_fora) / D.area.mosaico)
+          .toLocaleString("pt-BR", {maximumFractionDigits: 1})}% do mosaico)` : ""}.
+       <br><br>A área vai bem além do acervo: afaste o zoom para vê-la inteira.` : ""},
     rotas: {tit: "Rotas de voo", txt:
       `A trajetória entregue pelo fornecedor, simplificada a 50 m${
         D.rotas_km ? `: ${Math.round(D.rotas_km).toLocaleString("pt-BR")} km em
@@ -3901,7 +3989,7 @@
       vista.cy = (la + lb) / 2;
       const lonkm = Math.max(hi - lo, 0.01), latkm = Math.max(lb - la, 0.01);
       const alvo = Math.min(1 / lonkm, 1 / latkm) * 0.5;
-      vista.zoom = Math.min(400, Math.max(1, alvo));
+      vista.zoom = Math.min(400, Math.max(zMin, alvo));
       desenhar(); controles();
     }
 
